@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'base';
+@import 'mixins';
+@import 'layouts';
+@import 'components';
+
+@font-face {
+  font-family: 'ClashGrotesk-Variable';
+  src: url('../fonts/ClashGrotesk-Variable.woff2') format('woff2'),
+  url('../fonts/ClashGrotesk-Variable.woff') format('woff'),
+  url('../fonts/ClashGrotesk-Variable.ttf') format('truetype');
+  font-weight: 200 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+
+h1 {
+  @apply lg:text-4xl font-semibold text-3xl text-white;
+}
+
+h2 {
+  @apply lg:text-4xl font-bold text-3xl text-white;
+}
+
+body {
+  @apply bg-black ml-96 font-clashgrotesk;
+
+  main {
+    @apply pt-20;
+    .page_home {
+      .trending-artist {
+        @apply col-span-8 h-[450px] bg-primary p-8;
+        .trend-content {
+          p {
+            @apply text-lg font-semibold;
+          }
+        }
+      }
+    }
+  }
+}

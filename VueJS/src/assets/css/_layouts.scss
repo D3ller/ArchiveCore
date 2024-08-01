@@ -1,0 +1,23 @@
+.navbar {
+  @apply w-72 max-w-72 bg-black top-0 left-0 h-screen fixed px-5 py-5;
+  .navbar-brand {
+    @apply flex items-center gap-4 mb-5;
+img {
+    @apply w-16 h-16 rounded-full;
+
+}
+  }
+  .navbar-title {
+    @apply text-white text-lg font-medium px-4 mb-4;
+  }
+  .navbar-menu {
+    @apply flex flex-col gap-0.5 mb-4;
+    .navbar-item {
+      @apply text-[#b3b3b3] text-sm px-4 font-semibold py-3 rounded-xl duration-300 cursor-pointer flex items-center gap-4;
+      &:hover {
+        @apply bg-[#212121] text-white;
+      }
+    }
+  }
+
+}

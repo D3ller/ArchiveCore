@@ -1,0 +1,169 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+html, body,
+h1, h2, h3, h4, h5, h6,
+a, p, span,
+em, small, strong,
+sub, sup,
+mark, del, ins, strike,
+abbr, dfn,
+blockquote, q, cite,
+code, pre,
+ol, ul, li, dl, dt, dd,
+div, section, article,
+main, aside, nav,
+header, hgroup, footer,
+img, figure, figcaption,
+address, time,
+audio, video,
+canvas, iframe,
+details, summary,
+fieldset, form, label, legend,
+table, caption,
+tbody, tfoot, thead,
+tr, th, td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+* {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+a,
+a:visited {
+  color: inherit;
+}
+
+article,
+aside,
+footer,
+header,
+nav,
+section,
+main {
+  display: block;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+img,
+video {
+  max-width: 100%;
+}
+
+img {
+  border-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:after,
+blockquote:before,
+q:after,
+q:before {
+  content: "";
+  content: none;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+[disabled] {
+  cursor: not-allowed;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.navbar {
+  @apply w-72 max-w-72 bg-black top-0 left-0 h-screen fixed px-5 py-5;
+}
+.navbar .navbar-brand {
+  @apply flex items-center gap-4 mb-5;
+}
+.navbar .navbar-brand img {
+  @apply w-16 h-16 rounded-full;
+}
+.navbar .navbar-title {
+  @apply text-white text-lg font-medium px-4 mb-4;
+}
+.navbar .navbar-menu {
+  @apply flex flex-col gap-0.5 mb-4;
+}
+.navbar .navbar-menu .navbar-item {
+  @apply text-[#b3b3b3] text-sm px-4 font-semibold py-3 rounded-xl duration-300 cursor-pointer flex items-center gap-4;
+}
+.navbar .navbar-menu .navbar-item:hover {
+  @apply bg-[#212121] text-white;
+}
+
+.alerts-danger {
+  @apply bg-danger-1-bg text-danger-0-text p-5 w-full rounded-xl flex justify-center;
+}
+.alerts-success {
+  @apply bg-success-1-bg text-success-0-text p-5 w-full rounded-xl flex justify-center;
+}
+
+.input {
+  @apply p-4 w-full rounded-xl bg-transparent border-2 border-white text-white duration-300;
+}
+.input:focus {
+  @apply outline-0 border-primary;
+}
+
+@font-face {
+  font-family: "ClashGrotesk-Variable";
+  src: url("../fonts/ClashGrotesk-Variable.woff2") format("woff2"), url("../fonts/ClashGrotesk-Variable.woff") format("woff"), url("../fonts/ClashGrotesk-Variable.ttf") format("truetype");
+  font-weight: 200 700;
+  font-display: swap;
+  font-style: normal;
+}
+h1 {
+  @apply lg:text-4xl font-semibold text-3xl text-white;
+}
+
+h2 {
+  @apply lg:text-4xl font-bold text-3xl text-white;
+}
+
+body {
+  @apply bg-black ml-96 font-clashgrotesk;
+}
+body main {
+  @apply pt-20;
+}
+body main .page_home .trending-artist {
+  @apply col-span-8 h-[450px] bg-primary p-8;
+}
+body main .page_home .trending-artist .trend-content p {
+  @apply text-lg font-semibold;
+}
+
+/*# sourceMappingURL=main.css.map */
