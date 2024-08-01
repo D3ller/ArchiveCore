@@ -4,6 +4,11 @@ import {PrismaClient} from '@prisma/client';
 const prisma = new PrismaClient();
 
 export const registerAccount = async (req, res) => {
+
+    if (req.session.loggedin) {
+        return res.status(409).json({message: 'User is already logged in'});
+    }
+
     const {username, password, confirm_password, email} = req.body;
 
     if (!username || !password || !confirm_password || !email) {
@@ -54,6 +59,11 @@ export const registerAccount = async (req, res) => {
 };
 
 export const loginAccount = async (req, res) => {
+
+    if (req.session.loggedin) {
+        return res.status(409).json({message: 'User is already logged in'});
+    }
+
     let {username, password} = req.body;
     if (!username || !password) {
         return res.status(401).json({message: 'Missing username or password'});
@@ -97,7 +107,7 @@ export const updateAccount = async (req, res) => {
         return res.status(401).json({message: 'User is not logged in'});
     }
 
-    if(!username || !email || !cover_url) {
+    if (!username || !email || !cover_url) {
         console.log(username, email, cover_url)
         return res.status(400).json({message: 'Please fill in all fields'});
     }
@@ -145,4 +155,12 @@ export const updateAccount = async (req, res) => {
 export const logoutAccount = async (req, res) => {
     req.session.destroy();
     return res.status(200).json({message: 'User logged out successfully'});
+}
+
+export const verifyAccount = async (req, res) => {
+    let userId = req.session.userId;
+    if (!userId) {
+        return res.status(401).json({message: 'User is not logged in'});
+    }
+    return res.status(200).json({message: 'User is logged in'});
 }
