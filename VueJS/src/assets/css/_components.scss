@@ -19,7 +19,7 @@
 }
 
 .artist-bubble {
-  @apply flex items-center gap-2;
+  @apply flex items-center gap-2 mt-2;
   .artist-bubble__avatar {
     @apply w-9 h-9 rounded-full bg-primary;
   }
@@ -45,12 +45,16 @@
       @apply w-full h-full rounded-xl;
     }
   }
+
+  .track-artist {
+    @apply text-[#b3b3b3] text-sm font-medium;
+  }
 }
 
 .track-details {
-  @apply flex flex-col gap-5;
+  @apply flex flex-col gap-5 cursor-pointer;
   .track-icon {
-    @apply w-44 h-44 md:w-56 md:h-56 bg-primary;
+    @apply w-44 h-44 md:w-56 md:h-56 bg-cover;
   }
   .track-info {
     @apply px-2;

@@ -31,7 +31,13 @@ const loginIn = () => {
       .then((response) => {
         if (response.status === 200) {
           account.set(true);
-          router.push({name: 'dashboard'});
+          if (router.currentRoute.value.query.redirect) {
+            console.log(router.currentRoute.value.query)
+            router.push(router.currentRoute.value.query.redirect);
+          } else {
+
+            router.push({name: 'dashboard'});
+          }
         }
       })
       .catch((error) => {

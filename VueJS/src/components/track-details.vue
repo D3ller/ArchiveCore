@@ -37,24 +37,29 @@ let props = defineProps({
   },
   title: {
     type: String,
-    required: true
+    required: false
   },
   artist: {
     type: String,
-    required: true
+    required: false
   },
+  to: {
+    type: Object,
+    required: false,
+    default: {name: 'home'}
+  }
 })
 
 </script>
 
 <template>
-<div class="track-details">
+<router-link :to="to" class="track-details">
   <div class="track-icon" :style="{clipPath: rounded, backgroundImage: `url(${coverUrl})`}" ref="cover"></div>
   <div class="track-info">
-    <p class="track-title">{{ title }}</p>
-    <p class="track-artist">{{ artist }}</p>
+    <p class="track-title" v-if="title">{{ title }}</p>
+    <p class="track-artist" v-if="artist">{{ artist }}</p>
   </div>
-</div>
+</router-link>
 </template>
 
 <style scoped>

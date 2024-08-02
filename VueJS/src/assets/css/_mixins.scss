@@ -30,5 +30,8 @@
     &:hover {
         @apply bg-primary bg-opacity-20;
     }
+    &.error {
+        @apply bg-danger-1-bg border-danger-1-bg border-opacity-50 text-danger-0-text;
+    }
   }
 }

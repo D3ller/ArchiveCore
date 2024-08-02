@@ -22,7 +22,6 @@ export const getArtistBySlug = async (req, res) => {
                     coverURL: true,
                     slug: true,
                     duration: true,
-
                     history: {
                         where: {
                             date: {
@@ -39,11 +38,26 @@ export const getArtistBySlug = async (req, res) => {
         }
     });
 
+
+
     if (!artist) {
         return res.status(404).json({error: 'Artist not found'});
     }
-    
-    const recentSong = await prisma.song.findMany({
+
+    if(req.session.loggedin) {
+        if(req.session.userId) {
+            const subscribe = await prisma.subscription.findFirst({
+                where: {
+                    artist_id: artist.id,
+                    account_id: req.session.userId
+                }
+            });
+
+            artist.subscribed = !!subscribe;
+        }
+    }
+
+    artist.recentSongs = await prisma.song.findMany({
         where: {
             artist_id: artist.id
         },
@@ -57,9 +71,7 @@ export const getArtistBySlug = async (req, res) => {
             slug: true,
             duration: true
         }
-    })
-
-    artist.recentSongs = recentSong;
+    });
 
     return res.status(200).json(artist);
 }

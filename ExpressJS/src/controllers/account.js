@@ -13,7 +13,7 @@ export const getAccount = async (req, res) => {
             id: userId
         },
         select: {
-            id: false,
+            id: true,
             username: true,
             avatarURL: true,
             email: false,
@@ -21,6 +21,17 @@ export const getAccount = async (req, res) => {
             password: false,
             bio: true,
             bannerURL: true,
+            subscription: {
+                select: {
+                    artist: {
+                        select: {
+                            slug: true,
+                            name: true,
+                            avatarURL: true
+                        }
+                    }
+                }
+            }
         }
     });
     return res.status(200).json({message: 'User found', user});

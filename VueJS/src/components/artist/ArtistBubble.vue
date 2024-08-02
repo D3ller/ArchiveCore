@@ -4,21 +4,17 @@ let props = defineProps({
     type: String,
     required: true
   },
-  name: {
-    type: String,
-    required: true
-  },
-  to: {
-    type: String,
+  artist: {
+    type: Object,
     required: true
   }
 })
 </script>
 
 <template>
-  <router-link :to="to" class="artist-bubble">
-    <div class="artist-bubble__avatar" :style="{backgroundImage: `url(${avatarURL})`}"></div>
-    <p>{{ name }}</p>
+  <router-link to="" class="artist-bubble">
+    <div class="artist-bubble__avatar" :style="{backgroundImage: `url(${artist[0].avatarURL})`}"></div>
+    <p>{{ artist[0].name }}</p>
   </router-link>
 </template>
 

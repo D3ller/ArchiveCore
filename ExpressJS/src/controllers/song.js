@@ -21,13 +21,23 @@ export const getSongBySlug = async (req, res) => {
                         username: true
                     }
                 },
+                Featurings: {
+                  select: {
+                      artist: {
+                          select: {
+                              name: true,
+                              slug: true
+                          }
+                      }
+                  }
+                },
                 artist: {
                     select: {
                         name: true,
                         avatarURL: true,
                         slug: true
                     }
-                }
+                },
             }
         });
 

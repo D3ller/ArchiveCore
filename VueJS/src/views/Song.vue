@@ -1,9 +1,9 @@
 <script setup>
-import { useRoute } from 'vue-router';
-import { onMounted, ref } from 'vue';
+import {useRoute} from 'vue-router';
+import {onMounted, ref} from 'vue';
 import axios from 'axios';
 import ArtistBubble from '@/components/artist/ArtistBubble.vue';
-import { getSvgPath } from 'figma-squircle';
+import {getSvgPath} from 'figma-squircle';
 import Tracks from '@/components/tracks.vue';
 import Notfound from '@/components/notfound.vue';
 
@@ -13,6 +13,7 @@ const song = ref(null);
 const cover = ref(null);
 const rounded = ref(null);
 const error = ref(null);
+const artist = ref([]);
 
 function roundedClipPath() {
   if (cover.value) {
@@ -41,6 +42,11 @@ axios.get(`http://localhost:5132/api/song/find/${id}`, {
     .then((response) => {
       console.log(response.data);
       song.value = response.data;
+      artist.value.push(response.data.artist);
+      for (let i = 0; i < response.data.Featurings.length; i++) {
+        artist.value.push(response.data.Featurings[i].artist);
+      }
+
       setTimeout(() => {
         roundedClipPath();
       }, 0.1);
@@ -67,7 +73,8 @@ const msToSecAndMin = (ms) => {
       <div class="track-content" v-if="song">
         <p class="paragraph text-sm">Track — {{ msToSecAndMin(song.duration) }}</p>
         <h1>{{ song.title }}</h1>
-        <artist-bubble :to="'/artist/' + song.artist.slug" class="mt-2" :avatarURL="song.artist.avatarURL" :name="song.artist.name"></artist-bubble>
+        <artist-bubble :to="'/artist/' + song.artist.slug" class="mt-2" :artist="artist"
+                       :avatarURL="song.artist.avatarURL" :name="song.artist.name"></artist-bubble>
       </div>
     </div>
 
@@ -75,6 +82,7 @@ const msToSecAndMin = (ms) => {
       <notfound></notfound>
     </div>
 
-    <tracks class="once" :trackNumber="1" :title="song.title" :duration="song.duration" v-if="song"></tracks>
+    <tracks class="once" :trackNumber="1" :title="song.title" :duration="song.duration" :featured="artist"
+            v-if="song"></tracks>
   </div>
 </template>
