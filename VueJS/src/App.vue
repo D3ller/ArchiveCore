@@ -26,7 +26,7 @@ onMounted(() => {
   <navbar></navbar>
   <main>
     <div class="grid grid-cols-12">
-      <div class="col-span-8">
+      <div class="col-span-9">
         <RouterView/>
       </div>
     </div>

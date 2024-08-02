@@ -43,9 +43,9 @@ const account = useAccount();
         <div class="navbar-title">Account</div>
 
         <div class="navbar-menu">
-          <div class="navbar-item"><span class="material-symbols-outlined">account_circle</span>Profile</div>
+          <router-link :to="{name: 'dashboard'}" class="navbar-item"><span class="material-symbols-outlined">account_circle</span>Profile</router-link>
           <div class="navbar-item"><span class="material-symbols-outlined">settings</span>Settings</div>
-          <div class="navbar-item"><span class="material-symbols-outlined">logout</span>Logout</div>
+          <router-link :to="{name: 'logout'}" class="navbar-item"><span class="material-symbols-outlined">logout</span>Logout</router-link>
         </div>
       </div>
 

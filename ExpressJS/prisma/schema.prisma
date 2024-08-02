@@ -9,17 +9,22 @@ datasource db {
 
 model account {
   id Int @id @default(autoincrement())
-  username String @unique
+  username String @unique @db.VarChar(35)
+  bio String @default("No bio") @db.VarChar(100)
   email String @unique
   creation_date DateTime @default(now())
+  bannerURL String @default("https://cdn.discordapp.com/attachments/891978000000000000/891978000000000000/unknown.png")
   avatarURL String @default("https://cdn.discordapp.com/attachments/891978000000000000/891978000000000000/unknown.png")
   password String
   songs song[]
+  history history[]
+  Favorite Favorite[]
 }
 
 model song {
   id Int @id @default(autoincrement())
-  title String
+  slug  String? @unique @db.VarChar(60) @default(cuid())
+  title String @db.VarChar(100)
   coverURL String
   songURL String
   publication_date DateTime @default(now())
@@ -28,11 +33,31 @@ model song {
   duration Int
   account account @relation(fields: [user_id], references: [id])
   artist artist @relation(fields: [artist_id], references: [id])
+  history history[]
+  Favorite Favorite[]
 }
 
 model artist {
   id Int @id @default(autoincrement())
-  name String
+  name String @unique @db.VarChar(100)
+  slug String? @unique @db.VarChar(60) @default(cuid())
   songs song[]
   avatarURL String
+}
+
+model history {
+  id Int @id @default(autoincrement())
+  song_id Int
+  account_id Int
+  date DateTime @default(now())
+  account account @relation(fields: [account_id], references: [id])
+  song song @relation(fields: [song_id], references: [id])
+}
+
+model Favorite {
+  id Int @id @default(autoincrement())
+  account_id Int
+  song_id Int
+  account account @relation(fields: [account_id], references: [id])
+  song song @relation(fields: [song_id], references: [id])
 }

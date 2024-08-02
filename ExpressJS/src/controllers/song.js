@@ -1,9 +1,45 @@
 import {PrismaClient} from '@prisma/client';
-
+import crypto from 'crypto';
 const prisma = new PrismaClient();
 
 
-export const getSongs = async (req, res) => {
+export const getSongBySlug = async (req, res) => {
+    const {slug} = req.params;
+
+    if (!slug) {
+        return res.status(400).json({message: 'Please provide a slug'});
+    }
+
+    try {
+        const song = await prisma.song.findUnique({
+            where: {
+                slug: slug
+            },
+            include: {
+                account: {
+                    select: {
+                        username: true
+                    }
+                },
+                artist: {
+                    select: {
+                        name: true,
+                        avatarURL: true
+                    }
+                }
+            }
+        });
+
+        if (!song) {
+            return res.status(404).json({message: 'Song not found'});
+        }
+
+        return res.status(200).json(song);
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({message: 'An error occurred while fetching the song'});
+    }
+
 
 }
 
@@ -45,6 +81,7 @@ export const addSong = async (req, res) => {
                 songURL: song_url,
                 publication_date: date,
                 duration: duration,
+                slug: crypto.randomBytes(60).toString('base64').slice(0, 60).replace(/\+/g, '0').replace(/\//g, '0'),
                 account: {
                     connect: {
                         id: req.session.userId

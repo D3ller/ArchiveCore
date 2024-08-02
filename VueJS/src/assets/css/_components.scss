@@ -5,3 +5,55 @@
 .input {
   @include input;
 }
+
+.button {
+  @include button;
+}
+
+.paragraph {
+  @apply text-white;
+}
+
+.links {
+  @apply text-primary underline;
+}
+
+.artist-bubble {
+  @apply flex items-center gap-2;
+  .artist-bubble__avatar {
+    @apply w-9 h-9 rounded-full bg-primary;
+  }
+  p {
+    @apply text-[#b3b3b3] text-xl font-medium cursor-pointer;
+    &:hover {
+      @apply text-white;
+    }
+  }
+}
+
+.tracks {
+  @apply text-white flex justify-between py-5 border-b border-solid border-gray-900 items-center;
+  .track-title {
+    @apply font-medium;
+  }
+  &.once {
+    @apply mt-20 border-t;
+  }
+}
+
+.track-details {
+  @apply flex flex-col gap-5;
+  .track-icon {
+    @apply w-44 h-44 md:w-56 md:h-56 bg-primary;
+  }
+  .track-info {
+    @apply px-2;
+    .track-title {
+      @apply text-white text-2xl font-semibold;
+    }
+
+    .track-artist {
+      @apply text-[#b3b3b3] text-lg font-medium;
+    }
+  }
+}

@@ -9,10 +9,10 @@ export default {
       center: true,
     },
     screens: {
-      'sm': '576px',
-      'md': '768px',
-      'lg': '992px',
-      'xl': '1440px',
+      'sm': '1440px',
+      'md': '1600px',
+      'lg': '1800px',
+      'xl': '1920px',
     },
     extend: {
       colors: {

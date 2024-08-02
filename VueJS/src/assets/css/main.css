@@ -34,11 +34,6 @@ tr, th, td {
   line-height: inherit;
 }
 
-a,
-a:visited {
-  color: inherit;
-}
-
 article,
 aside,
 footer,
@@ -125,10 +120,10 @@ q:before {
 }
 
 .alerts-danger {
-  @apply bg-danger-1-bg text-danger-0-text p-5 w-full rounded-xl flex justify-center;
+  @apply text-center bg-danger-1-bg text-danger-0-text p-5 w-full rounded-xl flex justify-center;
 }
 .alerts-success {
-  @apply bg-success-1-bg text-success-0-text p-5 w-full rounded-xl flex justify-center;
+  @apply text-center bg-success-1-bg text-success-0-text p-5 w-full rounded-xl flex justify-center;
 }
 
 .input {
@@ -136,6 +131,66 @@ q:before {
 }
 .input:focus {
   @apply outline-0 border-primary;
+}
+
+.button {
+  @apply font-medium;
+}
+.button-primary {
+  @apply p-4 bg-primary text-white rounded-xl;
+}
+.button-rounded {
+  @apply px-4 py-2 bg-black text-white border border-white border-solid rounded-full duration-300;
+}
+.button-rounded:hover {
+  @apply bg-white bg-opacity-20;
+}
+
+.paragraph {
+  @apply text-white;
+}
+
+.links {
+  @apply text-primary underline;
+}
+
+.artist-bubble {
+  @apply flex items-center gap-2;
+}
+.artist-bubble .artist-bubble__avatar {
+  @apply w-9 h-9 rounded-full bg-primary;
+}
+.artist-bubble p {
+  @apply text-[#b3b3b3] text-xl font-medium cursor-pointer;
+}
+.artist-bubble p:hover {
+  @apply text-white;
+}
+
+.tracks {
+  @apply text-white flex justify-between py-5 border-b border-solid border-gray-900 items-center;
+}
+.tracks .track-title {
+  @apply font-medium;
+}
+.tracks.once {
+  @apply mt-20 border-t;
+}
+
+.track-details {
+  @apply flex flex-col gap-5;
+}
+.track-details .track-icon {
+  @apply w-44 h-44 md:w-56 md:h-56 bg-primary;
+}
+.track-details .track-info {
+  @apply px-2;
+}
+.track-details .track-info .track-title {
+  @apply text-white text-2xl font-semibold;
+}
+.track-details .track-info .track-artist {
+  @apply text-[#b3b3b3] text-lg font-medium;
 }
 
 @font-face {
@@ -150,7 +205,11 @@ h1 {
 }
 
 h2 {
-  @apply lg:text-4xl font-bold text-3xl text-white;
+  @apply lg:text-3xl font-semibold text-2xl text-white;
+}
+
+h3 {
+  @apply lg:text-2xl font-semibold text-xl text-white;
 }
 
 body {
@@ -164,6 +223,27 @@ body main .page_home .trending-artist {
 }
 body main .page_home .trending-artist .trend-content p {
   @apply text-lg font-semibold;
+}
+body main .page_home .popular_tracks {
+  @apply flex justify-between mt-5 gap-5;
+}
+body main .page_home .popular_tracks .track-details {
+  @apply col-span-3;
+}
+body main .page_profile .profile_banner {
+  @apply h-64 bg-white rounded-3xl relative;
+}
+body main .page_profile .profile_banner .profile_avatar {
+  @apply absolute -bottom-20 left-5 w-44 h-44 rounded-full bg-blue-400 border-4 border-black border-solid bg-no-repeat bg-cover;
+}
+body main .page_track .track {
+  @apply flex gap-10 items-center;
+}
+body main .page_track .track .track-icon {
+  @apply w-60 h-60 bg-primary;
+}
+body main .page_track .track .track-content {
+  @apply flex flex-col justify-between;
 }
 
 /*# sourceMappingURL=main.css.map */

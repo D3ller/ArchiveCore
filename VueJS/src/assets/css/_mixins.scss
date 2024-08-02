@@ -1,9 +1,9 @@
 @mixin alert {
   &-danger {
-    @apply bg-danger-1-bg text-danger-0-text p-5 w-full rounded-xl flex justify-center;
+    @apply text-center bg-danger-1-bg text-danger-0-text p-5 w-full rounded-xl flex justify-center;
   }
   &-success {
-    @apply bg-success-1-bg text-success-0-text p-5 w-full rounded-xl flex justify-center;
+    @apply text-center bg-success-1-bg text-success-0-text p-5 w-full rounded-xl flex justify-center;
   }
 }
 
@@ -11,5 +11,18 @@
   @apply p-4 w-full rounded-xl bg-transparent border-2 border-white text-white duration-300;
   &:focus {
     @apply outline-0 border-primary;
+  }
+}
+
+@mixin button {
+  @apply font-medium;
+  &-primary {
+    @apply p-4 bg-primary text-white rounded-xl;
+  }
+  &-rounded {
+    @apply px-4 py-2 bg-black text-white border border-white border-solid rounded-full duration-300;
+    &:hover {
+        @apply bg-white bg-opacity-20;
+    }
   }
 }
