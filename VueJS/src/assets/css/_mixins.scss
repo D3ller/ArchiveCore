@@ -25,4 +25,10 @@
         @apply bg-white bg-opacity-20;
     }
   }
+  &-border {
+    @apply px-4 py-2 bg-transparent text-primary border border-primary border-solid rounded-xl duration-300;
+    &:hover {
+        @apply bg-primary bg-opacity-20;
+    }
+  }
 }

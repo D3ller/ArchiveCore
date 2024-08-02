@@ -1,5 +1,5 @@
 .navbar {
-  @apply w-72 max-w-72 bg-black top-0 left-0 h-screen fixed px-5 py-5;
+  @apply w-60 max-w-60 bg-black top-0 left-0 h-screen fixed px-5 py-5;
   .navbar-brand {
     @apply flex items-center gap-4 mb-5;
 img {
@@ -20,4 +20,8 @@ img {
     }
   }
 
+}
+
+.aside {
+  @apply fixed top-0 h-screen border-l border-[#212121] border-solid bg-black w-full;
 }

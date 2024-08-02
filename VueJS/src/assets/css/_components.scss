@@ -34,10 +34,16 @@
 .tracks {
   @apply text-white flex justify-between py-5 border-b border-solid border-gray-900 items-center;
   .track-title {
-    @apply font-medium;
+    @apply font-medium w-32;
   }
   &.once {
     @apply mt-20 border-t;
+  }
+  .track-cover {
+    @apply w-10 h-10 rounded-xl relative;
+    img {
+      @apply w-full h-full rounded-xl;
+    }
   }
 }
 

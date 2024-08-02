@@ -19,6 +19,7 @@ model account {
   songs song[]
   history history[]
   Favorite Favorite[]
+  subscription Subscription[]
 }
 
 model song {
@@ -28,6 +29,7 @@ model song {
   coverURL String
   songURL String
   publication_date DateTime @default(now())
+  created_at DateTime @default(now())
   user_id Int
   artist_id Int
   duration Int
@@ -43,6 +45,7 @@ model artist {
   slug String? @unique @db.VarChar(60) @default(cuid())
   songs song[]
   avatarURL String
+  subscription Subscription[]
 }
 
 model history {
@@ -60,4 +63,12 @@ model Favorite {
   song_id Int
   account account @relation(fields: [account_id], references: [id])
   song song @relation(fields: [song_id], references: [id])
+}
+
+model Subscription {
+  id Int @id @default(autoincrement())
+  account_id Int
+  artist_id Int
+  account account @relation(fields: [account_id], references: [id])
+  artist artist @relation(fields: [artist_id], references: [id])
 }

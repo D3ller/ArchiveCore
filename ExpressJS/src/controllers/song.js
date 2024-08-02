@@ -24,7 +24,8 @@ export const getSongBySlug = async (req, res) => {
                 artist: {
                     select: {
                         name: true,
-                        avatarURL: true
+                        avatarURL: true,
+                        slug: true
                     }
                 }
             }
@@ -101,4 +102,8 @@ export const addSong = async (req, res) => {
         return res.status(500).json({message: 'An error occurred while adding the song'});
     }
 
+}
+
+export const generateSlug = async (req, res) => {
+return res.status(200).json({slug: crypto.randomBytes(60).toString('base64').slice(0, 60).replace(/\+/g, '0').replace(/\//g, '0')});
 }
