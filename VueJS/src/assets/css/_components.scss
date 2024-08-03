@@ -21,7 +21,7 @@
 .artist-bubble {
   @apply flex items-center gap-2 mt-2;
   .artist-bubble__avatar {
-    @apply w-9 h-9 rounded-full bg-primary;
+    @apply w-9 h-9 rounded-full bg-cover;
   }
   p {
     @apply text-[#b3b3b3] text-xl font-medium cursor-pointer;
@@ -46,13 +46,20 @@
     }
   }
 
+  .track-actions {
+    button {
+      @apply flex items-center gap-5;
+    }
+    @apply flex items-center gap-5;
+  }
+
   .track-artist {
     @apply text-[#b3b3b3] text-sm font-medium;
   }
 }
 
 .track-details {
-  @apply flex flex-col gap-5 cursor-pointer;
+  @apply flex flex-col gap-5 cursor-pointer min-w-52 box-border;
   .track-icon {
     @apply w-44 h-44 md:w-56 md:h-56 bg-cover;
   }

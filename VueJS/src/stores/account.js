@@ -15,3 +15,25 @@ export const useAccount = defineStore('account', {
         },
     },
 })
+
+export const Player = defineStore('player', {
+    state: () => {
+        return {currentSong: null, queue: [], prev: []}
+    },
+
+    actions: {
+        setSong(song) {
+            console.log('setSong', song)
+            this.currentSong = song
+        },
+
+        addToQueue(song) {
+            this.queue.push(song)
+        },
+
+        addToPrevious(song) {
+            this.prev.push(song)
+        },
+
+    },
+})

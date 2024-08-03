@@ -85,6 +85,7 @@ model Album {
   publication_date DateTime @default(now())
   created_at DateTime @default(now())
   artist_id Int
+  slug String? @unique @db.VarChar(60) @default(cuid())
   artist artist @relation(fields: [artist_id], references: [id])
   songs song[]
 }

@@ -68,7 +68,7 @@ const msToSecAndMin = (ms) => {
   <div class="page_track">
     <div class="track" v-if="song">
       <div class="track-icon" :style="{ clipPath: rounded }" ref="cover">
-        <img :src="'http://localhost:5132' + song.coverURL" alt="cover" v-if="song">
+        <img :src="`http://localhost:5132/file/cover/${song.album ? song.album.slug : song.slug}`" alt="cover" v-if="song">
       </div>
       <div class="track-content" v-if="song">
         <p class="paragraph text-sm">Track — {{ msToSecAndMin(song.duration) }}</p>
@@ -82,7 +82,11 @@ const msToSecAndMin = (ms) => {
       <notfound></notfound>
     </div>
 
-    <tracks class="once" :trackNumber="1" :title="song.title" :duration="song.duration" :featured="artist"
+    <tracks class="once" :trackNumber="1" :album="song.album" :title="song.title" :duration="song.duration" :featured="artist" :slug="song.slug" :artist="song.artist.name"
             v-if="song"></tracks>
+
+    <p class="paragraph mt-5" v-if="song && song.album">
+      <router-link :to="'/album/' + song.album.slug">Album — {{ song.album.title }}</router-link>
+    </p>
   </div>
 </template>

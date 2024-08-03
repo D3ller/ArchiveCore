@@ -123,6 +123,43 @@ q:before {
   @apply fixed top-0 h-screen border-l border-[#212121] border-solid bg-black w-full;
 }
 
+.player {
+  @apply fixed w-full p-5 h-24 bottom-0 left-0 bg-black flex items-center justify-between px-5 z-10 border-t border-solid border-[#212121];
+}
+.player > * {
+  @apply w-1/3 flex items-center;
+}
+.player .player-controls {
+  @apply flex flex-col justify-center items-center gap-5;
+}
+.player .player-controls-icons {
+  @apply flex justify-center gap-5 text-white;
+}
+.player .player-controls-icons > * {
+  @apply cursor-pointer;
+}
+.player .player-controls .player-progress {
+  @apply w-full h-1 bg-[#212121] relative rounded-full;
+}
+.player .player-controls .player-progress-bar {
+  @apply h-full bg-primary absolute top-0 left-0 transition-all rounded-full;
+}
+.player .player-info {
+  @apply gap-4;
+}
+.player .player-info .player-title {
+  @apply font-medium text-white;
+}
+.player .player-info .player-artist {
+  @apply text-[#b3b3b3] font-medium text-sm;
+}
+.player .player-options {
+  @apply text-white justify-end;
+}
+.player .player-options .player-volume {
+  @apply flex items-center gap-2.5;
+}
+
 .alerts-danger {
   @apply text-center bg-danger-1-bg text-danger-0-text p-5 w-full rounded-xl flex justify-center;
 }
@@ -171,7 +208,7 @@ q:before {
   @apply flex items-center gap-2 mt-2;
 }
 .artist-bubble .artist-bubble__avatar {
-  @apply w-9 h-9 rounded-full bg-primary;
+  @apply w-9 h-9 rounded-full bg-cover;
 }
 .artist-bubble p {
   @apply text-[#b3b3b3] text-xl font-medium cursor-pointer;
@@ -195,12 +232,18 @@ q:before {
 .tracks .track-cover img {
   @apply w-full h-full rounded-xl;
 }
+.tracks .track-actions {
+  @apply flex items-center gap-5;
+}
+.tracks .track-actions button {
+  @apply flex items-center gap-5;
+}
 .tracks .track-artist {
   @apply text-[#b3b3b3] text-sm font-medium;
 }
 
 .track-details {
-  @apply flex flex-col gap-5 cursor-pointer;
+  @apply flex flex-col gap-5 cursor-pointer min-w-52 box-border;
 }
 .track-details .track-icon {
   @apply w-44 h-44 md:w-56 md:h-56 bg-cover;

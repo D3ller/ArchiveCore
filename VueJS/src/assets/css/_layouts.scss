@@ -2,14 +2,16 @@
   @apply w-60 max-w-60 bg-black top-0 left-0 h-screen fixed px-5 py-5;
   .navbar-brand {
     @apply flex items-center gap-4 mb-5;
-img {
-    @apply w-16 h-16 rounded-full;
+    img {
+      @apply w-16 h-16 rounded-full;
 
-}
+    }
   }
+
   .navbar-title {
     @apply text-white text-lg font-medium px-4 mb-4;
   }
+
   .navbar-menu {
     @apply flex flex-col gap-0.5 mb-4;
     .navbar-item {
@@ -24,4 +26,45 @@ img {
 
 .aside {
   @apply fixed top-0 h-screen border-l border-[#212121] border-solid bg-black w-full;
+}
+
+.player {
+  @apply fixed w-full p-5 h-24 bottom-0 left-0 bg-black flex items-center justify-between px-5 z-10 border-t border-solid border-[#212121];
+  & > * {
+    @apply w-1/3 flex items-center;
+  }
+
+  .player-controls {
+    @apply flex flex-col justify-center items-center gap-5;
+    &-icons {
+      @apply flex justify-center gap-5 text-white;
+      & > * {
+        @apply cursor-pointer;
+      }
+    }
+    .player-progress {
+      @apply w-full h-1 bg-[#212121] relative rounded-full;
+      &-bar {
+        @apply h-full bg-primary absolute top-0 left-0 transition-all rounded-full
+      }
+    }
+  }
+
+  .player-info {
+    @apply gap-4;
+    .player-title {
+      @apply font-medium text-white
+    }
+
+    .player-artist {
+      @apply text-[#b3b3b3] font-medium text-sm;
+    }
+  }
+
+  .player-options {
+    @apply text-white justify-end;
+    .player-volume {
+        @apply flex items-center gap-2.5;
+    }
+  }
 }

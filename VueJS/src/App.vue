@@ -5,6 +5,7 @@ import {onMounted} from "vue";
 import axios from "axios";
 import {useAccount} from '@/stores/account.js'
 import AsideBar from "@/components/layouts/asideBar.vue";
+import Player from "@/components/layouts/player.vue";
 
 const account = useAccount();
 
@@ -24,10 +25,11 @@ onMounted(() => {
 </script>
 
 <template>
+  <player></player>
   <navbar></navbar>
   <main>
     <div class="grid grid-cols-12 gap-10">
-      <div class="col-span-9 pt-20">
+      <div class="col-span-9 py-20">
         <RouterView/>
       </div>
       <div class="col-span-3 relative">
