@@ -1,8 +1,8 @@
 <script setup>
 import {onMounted} from "vue";
-import {useAccount} from "@/stores/account.js";
+import {useAccount} from "../../stores/account.js";
 import axios from "axios";
-import router from "@/router/index.js";
+import router from "../../router/index.js";
 let account = useAccount();
 
 onMounted(() => {

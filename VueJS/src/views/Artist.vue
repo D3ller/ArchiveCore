@@ -3,17 +3,18 @@ import {useRoute} from 'vue-router';
 import {onMounted, ref} from 'vue';
 import axios from 'axios';
 import {getSvgPath} from 'figma-squircle';
-import Tracks from '@/components/tracks.vue';
-import Notfound from '@/components/notfound.vue';
-import TrackDetails from "@/components/track-details.vue";
-import {useAccount} from "@/stores/account.js";
-import router from "@/router/index.js";
+import Tracks from "../components/tracks.vue";
+import Notfound from "../components/notfound.vue";
+import TrackDetails from "../components/track-details.vue";
+import {useAccount} from "../stores/account.js";
+import router from "../router/index.js";
 
 let account = useAccount();
 
 const route = useRoute();
 const id = route.params.id;
 const artist = ref(null);
+const feat = ref(null);
 const cover = ref(null);
 const rounded = ref(null);
 const error = ref(null);
@@ -105,17 +106,11 @@ let toggleSubscription = () => {
     </div>
 
 
-    <tracks v-for="(song, index) in artist.songs" :key="song.slug" :id="song.slug"
-            type="album"
+    <tracks v-for="(song, index) in artist.songs" :key="song.slug"
             :class="index >= 1 ? '' : 'once'"
             :track-number="index + 1"
             :to="{ name: 'song', params: { id: song.slug } }"
-            :song="song.songURL"
-            :title="song.title"
-            :duration="song.duration"
-            :slug="song.slug"
-            :album="song.album"
-            :artist="artist.name"
+            :song="song"
             v-if="artist">
     </tracks>
 

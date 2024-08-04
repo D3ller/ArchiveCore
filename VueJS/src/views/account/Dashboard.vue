@@ -1,9 +1,9 @@
 <script setup>
 import axios from "axios";
 import {computed, ref} from "vue";
-import router from "@/router/index.js";
-import Buttons from "@/components/button/buttons.vue";
-import TrackDetails from "@/components/track-details.vue";
+import router from "../../router/index.js";
+import Buttons from "../../components/button/buttons.vue";
+import TrackDetails from "../../components/track-details.vue";
 
 let account = ref(null)
 

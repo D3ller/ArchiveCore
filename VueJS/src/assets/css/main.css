@@ -46,6 +46,23 @@ main {
 
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  -webkit-tap-highlight-color: transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0);
+}
+*::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 *:before,
@@ -120,7 +137,22 @@ q:before {
 }
 
 .aside {
-  @apply fixed top-0 h-screen border-l border-[#212121] border-solid bg-black w-full;
+  @apply fixed top-0 h-screen border-l border-[#212121] border-solid bg-black w-full p-5 pt-20 overflow-x-auto;
+}
+.aside .aside-content {
+  @apply mt-10 text-white;
+}
+.aside .aside-content .waiting-item {
+  @apply flex items-center gap-4 p-4 rounded-xl;
+}
+.aside .aside-content .waiting-item .waiting-image {
+  @apply bg-cover;
+}
+.aside .aside-content .waiting-item .waiting-title {
+  @apply font-medium;
+}
+.aside .aside-content .waiting-item:hover {
+  @apply bg-[#212121];
 }
 
 .player {
@@ -141,8 +173,11 @@ q:before {
 .player .player-controls .player-progress {
   @apply w-full h-1 bg-[#212121] relative rounded-full;
 }
+.player .player-controls .player-progress:hover .player-progress-bar {
+  @apply bg-primary;
+}
 .player .player-controls .player-progress-bar {
-  @apply h-full bg-primary absolute top-0 left-0 transition-all rounded-full;
+  @apply h-full bg-white absolute top-0 left-0 transition-all rounded-full;
 }
 .player .player-info {
   @apply gap-4;
@@ -158,6 +193,19 @@ q:before {
 }
 .player .player-options .player-volume {
   @apply flex items-center gap-2.5;
+}
+
+.electron-navbar {
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+  @apply flex justify-end text-sm gap-5 px-5 bg-transparent text-white fixed h-10 z-[200] top-0 right-0 w-full;
+}
+.electron-navbar .electron-items {
+  -webkit-app-region: no-drag;
+  @apply p-2 w-8 flex items-center justify-center;
+}
+.electron-navbar .electron-items:hover {
+  @apply cursor-pointer;
 }
 
 .alerts-danger {
@@ -235,8 +283,8 @@ q:before {
 .tracks .track-actions {
   @apply flex items-center gap-5;
 }
-.tracks .track-actions button {
-  @apply flex items-center gap-5;
+.tracks .track-actions div {
+  @apply flex items-center gap-5 cursor-pointer;
 }
 .tracks .track-artist {
   @apply text-[#b3b3b3] text-sm font-medium;

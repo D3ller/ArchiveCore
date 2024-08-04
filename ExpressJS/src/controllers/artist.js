@@ -23,6 +23,13 @@ export const getArtistBySlug = async (req, res) => {
                     coverURL: true,
                     slug: true,
                     duration: true,
+                    artist: {
+                        select: {
+                            name: true,
+                            slug: true,
+                            avatarURL: true
+                        }
+                    },
                     album: {
                       select: {
                           slug: true,

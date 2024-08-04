@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import {ref} from "vue";
 import axios from "axios";
-import Alerts from "@/components/alerts.vue";
-import {useAccount} from '@/stores/account.js'
-import Buttons from "@/components/button/buttons.vue";
-import router from "@/router/index.js";
+import Alerts from "../../components/alerts.vue";
+import {useAccount} from "../../stores/account";
+import Buttons from "../../components/button/buttons.vue";
+import router from "../../router";
 
 const account = useAccount();
 

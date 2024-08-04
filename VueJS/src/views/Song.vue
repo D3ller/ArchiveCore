@@ -2,10 +2,10 @@
 import {useRoute} from 'vue-router';
 import {onMounted, ref} from 'vue';
 import axios from 'axios';
-import ArtistBubble from '@/components/artist/ArtistBubble.vue';
+import ArtistBubble from "../components/artist/ArtistBubble.vue";
 import {getSvgPath} from 'figma-squircle';
-import Tracks from '@/components/tracks.vue';
-import Notfound from '@/components/notfound.vue';
+import Tracks from "../components/tracks.vue";
+import Notfound from "../components/notfound.vue";
 
 const route = useRoute();
 const id = route.params.id;
@@ -40,11 +40,10 @@ axios.get(`http://localhost:5132/api/song/find/${id}`, {
   withCredentials: true
 })
     .then((response) => {
-      console.log(response.data);
       song.value = response.data;
-      artist.value.push(response.data.artist);
       for (let i = 0; i < response.data.Featurings.length; i++) {
         artist.value.push(response.data.Featurings[i].artist);
+        console.log(artist.value);
       }
 
       setTimeout(() => {
@@ -68,12 +67,12 @@ const msToSecAndMin = (ms) => {
   <div class="page_track">
     <div class="track" v-if="song">
       <div class="track-icon" :style="{ clipPath: rounded }" ref="cover">
-        <img :src="`http://localhost:5132/file/cover/${song.album ? song.album.slug : song.slug}`" alt="cover" v-if="song">
+        <img :src="`http://localhost:5132/file/${song.coverURL === 'null' ? 'artist' : 'cover'}/${song.album ? song.album.slug : song.coverURL === 'null' ? song.artist.slug : song.slug}`" alt="cover" v-if="song">
       </div>
       <div class="track-content" v-if="song">
         <p class="paragraph text-sm">Track — {{ msToSecAndMin(song.duration) }}</p>
         <h1>{{ song.title }}</h1>
-        <artist-bubble :to="'/artist/' + song.artist.slug" class="mt-2" :artist="artist"
+        <artist-bubble :to="'/artist/' + song.artist.slug" class="mt-2"
                        :avatarURL="song.artist.avatarURL" :name="song.artist.name"></artist-bubble>
       </div>
     </div>
@@ -82,7 +81,7 @@ const msToSecAndMin = (ms) => {
       <notfound></notfound>
     </div>
 
-    <tracks class="once" :trackNumber="1" :album="song.album" :title="song.title" :duration="song.duration" :featured="artist" :slug="song.slug" :artist="song.artist.name"
+    <tracks class="once" :trackNumber="1" :album="song.album" :duration="song.duration" :featured="artist" :artist="song.artist" :slug="song.slug" :song="song" :type="'song'"
             v-if="song"></tracks>
 
     <p class="paragraph mt-5" v-if="song && song.album">

@@ -2,9 +2,9 @@
 import {ref} from "vue";
 import axios from "axios";
 import { useRouter } from 'vue-router';
-import Alerts from "@/components/alerts.vue";
-import Buttons from "@/components/button/buttons.vue";
-import router from "@/router/index.js";
+import Alerts from "../../components/alerts.vue";
+import Buttons from "../../components/button/buttons.vue";
+import router from "../../router";
 
 let input: Object = ref({
   email: '',

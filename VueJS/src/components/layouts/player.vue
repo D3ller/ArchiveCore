@@ -1,6 +1,6 @@
 <script setup>
 import {onMounted, ref, watch} from "vue";
-import {Player} from "@/stores/account.js";
+import {Player} from "../../stores/account.js";
 
 let player = Player();
 let audio = new Audio();
@@ -87,7 +87,20 @@ let updateVolume = (e) => {
 
 window.addEventListener('keydown', (e) => {
   if (e.code === 'Space') {
+    if(!player.currentSong) {
+      console.error('No song is playing');
+      return;
+    }
+    e.preventDefault();
     audioToggle();
+  }
+  if(e.code === 'ArrowLeft') {
+    e.preventDefault();
+    audio.currentTime -= 10;
+  }
+  if(e.code === 'ArrowRight') {
+    e.preventDefault();
+    audio.currentTime += 10;
   }
 })
 </script>

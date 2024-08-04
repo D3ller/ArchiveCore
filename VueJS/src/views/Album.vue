@@ -1,17 +1,17 @@
 <script setup>
-import ArtistBubble from "@/components/artist/ArtistBubble.vue";
+import ArtistBubble from "../components/artist/ArtistBubble.vue";
 import {useRoute} from 'vue-router';
 import {onMounted, ref} from 'vue';
 import axios from 'axios';
 import {getSvgPath} from 'figma-squircle';
-import Tracks from "@/components/tracks.vue";
+import Tracks from "../components/tracks.vue";
 let route = useRoute();
 let id = route.params.id;
 
 let album = ref(null);
 let cover = ref(null);
 let rounded = ref(null);
-let featured = ref(null);
+let featured = ref([]);
 
 function roundedClipPath() {
   if (cover.value) {
@@ -40,7 +40,12 @@ axios.get(`http://localhost:5132/api/album/find/${id}`, {
 })
     .then((response) => {
       album.value = response.data;
-      featured.value = response.data.songs.map(song => song['Featurings']);
+      for(let i = 0; i < response.data.songs.length; i++) {
+        console.log(response.data.songs)
+        for(let j = 0; j < response.data.songs[i].Featurings.length; j++) {
+          featured.value.push([response.data.songs[i].Featurings[j].artist])
+        }
+      }
       setTimeout(() => {
         roundedClipPath();
       }, 0.1);
@@ -67,10 +72,8 @@ axios.get(`http://localhost:5132/api/album/find/${id}`, {
 
     </div>
 
-    <tracks v-if="album" v-for="(track, i) in album.songs" :class="i >= 1 ? '' : 'once'"
-            :trackNumber="i+1" :album="album" :title="track.title" :duration="track.duration" :featured="featured[i]" :slug="track.slug" :key="track.id" :artist="album.artist.name">
-
-
+    <tracks v-if="album" v-for="(track, i) in album.songs" :class="i >= 1 ? '' : 'once'" :to="{name: 'song', params: {id: track.slug}}"
+            :trackNumber="i+1" :album="album" :song="track" :key="track.id" :artist="album.artist" :featured="track.Featurings">
     </tracks>
 
   </div>

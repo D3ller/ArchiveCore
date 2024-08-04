@@ -1,25 +1,48 @@
 {
-  "name": "revision",
-  "version": "0.0.0",
+  "name": "electron-vue-vite",
+  "version": "28.1.0",
+  "main": "dist-electron/main/index.js",
+  "description": "VueJS Electron Vite",
+  "author": "草鞋没号 <308487730@qq.com>",
+  "license": "MIT",
   "private": true,
+  "keywords": [
+    "electron",
+    "rollup",
+    "vite",
+    "vue3",
+    "vue"
+  ],
+  "debug": {
+    "env": {
+      "VITE_DEV_SERVER_URL": "http://127.0.0.1:3344/"
+    }
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vue-tsc --noEmit && vite build && electron-builder",
     "preview": "vite preview"
-  },
-  "dependencies": {
-    "axios": "^1.6.8",
-    "figma-squircle": "^0.3.1",
-    "pinia": "^2.2.0",
-    "vue": "^3.4.21",
-    "vue-router": "^4.3.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
-    "autoprefixer": "^10.4.18",
-    "postcss": "^8.4.37",
-    "tailwindcss": "^3.4.1",
-    "vite": "^5.1.6"
+    "autoprefixer": "^10.4.20",
+    "electron": "^29.1.1",
+    "electron-builder": "^24.13.3",
+    "postcss": "^8.4.40",
+    "tailwindcss": "^3.4.7",
+    "typescript": "^5.4.2",
+    "vite": "^5.1.5",
+    "vite-plugin-electron": "^0.28.4",
+    "vite-plugin-electron-renderer": "^0.14.5",
+    "vue": "^3.4.21",
+    "vue-tsc": "^2.0.6"
+  },
+  "dependencies": {
+    "axios": "^1.7.3",
+    "figma-squircle": "^0.3.1",
+    "lodash": "^4.17.21",
+    "pinia": "^2.2.0",
+    "vue-router": "^4.4.2"
   }
 }

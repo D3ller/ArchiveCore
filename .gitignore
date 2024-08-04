@@ -7,3 +7,7 @@ Expressjs/src/app.js
 VueJS/node_modules
 ExpressJS/prisma/migrations
 ExpressJS/src/assets
+Old
+VueJS/.idea
+VueJS/.vscode
+VueJs/.github

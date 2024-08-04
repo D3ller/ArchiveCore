@@ -1,7 +1,7 @@
 <script setup>
 
-import Buttons from "@/components/button/buttons.vue";
-import router from "@/router/index.js";
+import Buttons from "./button/buttons.vue";
+import router from "../router/index.js";
 </script>
 
 <template>

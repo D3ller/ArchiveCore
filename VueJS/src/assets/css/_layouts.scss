@@ -25,7 +25,22 @@
 }
 
 .aside {
-  @apply fixed top-0 h-screen border-l border-[#212121] border-solid bg-black w-full;
+  @apply fixed top-0 h-screen border-l border-[#212121] border-solid bg-black w-full p-5 pt-20 overflow-x-auto;
+  .aside-content {
+    @apply mt-10 text-white;
+    .waiting-item {
+      @apply flex items-center gap-4 p-4 rounded-xl;
+      .waiting-image {
+        @apply bg-cover;
+      }
+      .waiting-title {
+        @apply font-medium;
+      }
+      &:hover {
+        @apply bg-[#212121];
+      }
+    }
+  }
 }
 
 .player {
@@ -44,8 +59,13 @@
     }
     .player-progress {
       @apply w-full h-1 bg-[#212121] relative rounded-full;
+      &:hover {
+        .player-progress-bar {
+          @apply bg-primary;
+        }
+      }
       &-bar {
-        @apply h-full bg-primary absolute top-0 left-0 transition-all rounded-full
+        @apply h-full bg-white absolute top-0 left-0 transition-all rounded-full
       }
     }
   }
@@ -65,6 +85,19 @@
     @apply text-white justify-end;
     .player-volume {
         @apply flex items-center gap-2.5;
+    }
+  }
+}
+
+.electron-navbar {
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+  @apply flex justify-end text-sm gap-5 px-5 bg-transparent text-white fixed h-10 z-[200] top-0 right-0 w-full;
+  .electron-items {
+    -webkit-app-region: no-drag;
+    @apply p-2 w-8 flex items-center justify-center;
+    &:hover {
+      @apply cursor-pointer;
     }
   }
 }

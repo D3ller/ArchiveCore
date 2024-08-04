@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {getSvgPath} from "figma-squircle";
 import {getCurrentInstance, onMounted, ref} from "vue";
-import TrackDetails from "@/components/track-details.vue";
+import TrackDetails from "../components/track-details.vue";
 
 let trending = ref<HTMLElement | null>(null);
 const uid = getCurrentInstance()?.uid;

@@ -1,5 +1,5 @@
 <script setup>
-import {useAccount} from '@/stores/account.js'
+import {useAccount} from "../../stores/account.js";
 
 const account = useAccount();
 </script>
@@ -10,7 +10,7 @@ const account = useAccount();
     <nav class="navbar">
 
       <div class="navbar-brand">
-        <img src="@/assets/image/favicon/favicon.ico" alt="logo" />
+        <img src="../../assets/image/favicon/favicon.ico" alt="logo" />
       </div>
 
       <div class="navbar-title">Browse</div>

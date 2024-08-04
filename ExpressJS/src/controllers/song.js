@@ -61,7 +61,8 @@ export const getSongBySlug = async (req, res) => {
 }
 
 export const addSong = async (req, res) => {
-    const {title, published, duration, artistid} = req.body;
+    const {title, published, duration, artistid, cover} = req.body;
+    let coverOrNo = false;
 
     console.log(req.session.userId)
 
@@ -75,6 +76,10 @@ export const addSong = async (req, res) => {
 
     if (title.length > 35) {
         return res.status(400).json({message: 'Title is too long'});
+    }
+
+    if(!cover) {
+        coverOrNo = true;
     }
 
     let date = new Date(published);
@@ -95,7 +100,7 @@ export const addSong = async (req, res) => {
         const newSong = await prisma.song.create({
             data: {
                 title: title,
-                coverURL: '/file/cover/' + slugs,
+                coverURL: 'null',
                 songURL: '/file/song/' + slugs,
                 publication_date: date,
                 duration: duration,
@@ -117,7 +122,7 @@ export const addSong = async (req, res) => {
             return res.status(500).json({message: 'An error occurred while adding the song'});
         }
 
-        return res.status(201).json({message: 'Song added to' + newSong, songId: newSong.id});
+        return res.status(201).json({message: 'Song added to' + newSong, songId: newSong.id, songSlug: newSong.slug});
     } catch (err) {
         console.error(err);
         return res.status(500).json({message: 'An error occurred while adding the song'});

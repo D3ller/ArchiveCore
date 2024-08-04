@@ -5,7 +5,7 @@ import {ratelimit} from "../config/ratelimit.js";
 
 const router = Router();
 
-router.post('/add', ratelimit(15 * 60 * 1000, 20), middleware, addSong);
+router.post('/add', middleware, addSong);
 router.get('/find/:slug', getSongBySlug);
 router.get('/generateSlug', ratelimit(15 * 60 * 1000, 20), generateSlug);
 

@@ -35,6 +35,18 @@ export const getAlbumBySlug = async (req,res) => {
                                 }
                             }
                         },
+                        album: {
+                            select: {
+                                title: true,
+                                slug: true
+                            }
+                        },
+                        artist: {
+                            select: {
+                                name: true,
+                                slug: true
+                            }
+                        }
                     }
                 }
             }
