@@ -40,6 +40,8 @@ axios.post('https://192.168.1.158:5132/api/friends/add', {
     .then((response) => {
       console.log(response.data);
       modal.value.open = false;
+      socket.emit('friendRequest', response.data.userId);
+      message.value = '';
     })
     .catch((err) => {
       console.log(err.response.data);

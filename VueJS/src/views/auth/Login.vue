@@ -5,6 +5,7 @@ import Alerts from "../../components/alerts.vue";
 import {useAccount} from "../../stores/account";
 import Buttons from "../../components/button/buttons.vue";
 import router from "../../router";
+import socket from "../../socket";
 
 const account = useAccount();
 
@@ -31,11 +32,11 @@ const loginIn = () => {
       .then((response) => {
         if (response.status === 200) {
           account.set(true);
+          socket.emit('login', response.data.userId);
           if (router.currentRoute.value.query.redirect) {
             console.log(router.currentRoute.value.query)
             router.push(router.currentRoute.value.query.redirect);
           } else {
-
             router.push({name: 'dashboard'});
           }
         }

@@ -24,3 +24,12 @@ export const findSongBySlug = async (slug) => {
         },
     });
 }
+
+export const getCurrentPendingRequests = async (userId) => {
+    return prisma.friends.findMany({
+        where: {
+            accepterId: userId,
+            status: 'pending',
+        },
+    });
+}

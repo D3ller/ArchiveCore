@@ -21,7 +21,6 @@ const player = Player();
 let playing = ref(false);
 
 watch(() => player.currentSong, (value) => {
-  console.log('caca')
   playing.value = !!value;
 })
 
@@ -36,6 +35,7 @@ onMounted(() => {
         if (response.status === 200) {
           account.set(true)
         }
+        socket.emit('login', response.data.userId)
       })
       .catch((error) => {
         console.log(error);

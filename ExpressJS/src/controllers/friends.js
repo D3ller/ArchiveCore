@@ -69,6 +69,32 @@ export const addFriend = async (req, res) => {
         return res.status(400).json({message: 'You cannot send a friend request to yourself'});
     }
 
-    res.status(200).json({message: 'Friend request sent'});
+    const friendRequest = await prisma.friends.findFirst({
+        where: {
+            OR: [
+                {
+                    requesterId: req.session.userId,
+                    accepterId: getUserByEmailorUsername.id
+                },
+                {
+                    requesterId: getUserByEmailorUsername.id,
+                    accepterId: req.session.userId
+                }
+            ]
+        }
+    });
+
+    if(friendRequest) {
+        return res.status(400).json({message: 'Friend request already sent'});
+    }
+
+    await prisma.friends.create({
+        data: {
+            requesterId: req.session.userId,
+            accepterId: getUserByEmailorUsername.id
+        }
+    });
+
+    return res.status(200).json({message: 'Friend request sent', userId: req.session.userId});
 
 }

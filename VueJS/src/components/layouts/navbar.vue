@@ -1,8 +1,19 @@
 <script setup>
 import {useAccount} from "../../stores/account.js";
 import Devonly from "../devonly.vue";
+import socket from "../../socket.ts";
+import {ref} from "vue";
 
 const account = useAccount();
+let pendingRequests = ref(0);
+
+socket.on('pendingRequests', (data) => {
+  pendingRequests.value = data;
+})
+
+socket.on('friendRequest', () => {
+  pendingRequests.value++;
+})
 </script>
 
 <template>
@@ -57,7 +68,8 @@ playlist_play
         <div class="navbar-menu">
           <router-link :to="{name: 'dashboard'}" class="navbar-item"><span class="material-symbols-outlined">account_circle</span>Profile
           </router-link>
-          <router-link to="/friends" class="navbar-item"><span class="material-symbols-outlined">artist</span>Friends
+          <router-link to="/friends" class="navbar-item"><span class="material-symbols-outlined">artist</span>Friends <span
+              v-if="pendingRequests > 0" class="badge">{{ pendingRequests }}</span>
           </router-link>
           <div class="navbar-item"><span class="material-symbols-outlined">settings</span>Settings</div>
           <router-link :to="{name: 'logout'}" class="navbar-item"><span class="material-symbols-outlined">logout</span>Logout
