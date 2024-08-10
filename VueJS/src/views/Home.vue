@@ -2,10 +2,21 @@
 import {getSvgPath} from "figma-squircle";
 import {getCurrentInstance, onMounted, ref} from "vue";
 import TrackDetails from "../components/track-details.vue";
+import axios from "axios";
 
 let trending = ref<HTMLElement | null>(null);
 const uid = getCurrentInstance()?.uid;
 let rounded = ref<string | null>(null);
+let homeSongs = ref<any>(null);
+
+axios.post('http://localhost:5132/api/song/home', {}, {
+  withCredentials: true
+}).then(res => {
+  homeSongs.value = res.data
+}).catch(err => {
+  console.log(err)
+})
+
 
 onMounted(() => {
   if (trending.value) {
@@ -49,6 +60,7 @@ onMounted(() => {
 </script>
 
 <template>
+
   <div class="page_home">
     <div class="w-full">
       <h1 class="mb-5">Trend Artist and Song</h1>
@@ -61,10 +73,7 @@ onMounted(() => {
       <div class="most_popular mt-10"><h2>Most popular songs</h2></div>
 
       <div class="popular_tracks mb-20">
-        <track-details title="Broma" artist="Freeze Corleone" cover-url="ff"></track-details>
-        <track-details title="Unknown" artist="Nono La Grinta" cover-url="ff"></track-details>
-        <track-details title="?" artist="Menace Santana" cover-url="ff"></track-details>
-        <track-details title="Chimie Organique" artist="Freeze Corleone" cover-url="ff"></track-details>
+        <track-details v-for="song in homeSongs" :key="song.id" :title="song.title" :artist="song.artist" :id="song.id" :cover-url="song.coverURL" :to="{name: 'song', params: {id: song.slug}}"/>
       </div>
 
     </div>

@@ -9,7 +9,7 @@ export const searchSongAlbumArtist = async (req, res) => {
     }
 
     const songs = await prisma.song.findMany({
-        take: 20,
+        // take: 20,
         where: {
             OR: [
                 {

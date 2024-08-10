@@ -13,7 +13,7 @@ let props = defineProps({
 
 <template>
   <router-link to="" class="artist-bubble">
-    <div class="artist-bubble__avatar" :style="{backgroundImage: `url(http://localhost:5132${avatarURL})`}"></div>
+    <div class="artist-bubble__avatar" :style="{ backgroundImage: `url(${avatarURL.startsWith('https://') ? avatarURL : 'http://localhost:5132' + avatarURL})` }"></div>
     <p>{{ name }}</p>
   </router-link>
 </template>

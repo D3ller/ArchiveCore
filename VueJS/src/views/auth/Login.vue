@@ -8,18 +8,18 @@ import router from "../../router";
 
 const account = useAccount();
 
-let input: Object = ref({
-  username: '',
-  password: ''
+let input :any  = ref({
+  username: 'koradubinks',
+  password: 'cacadeFou04'
 })
 
-let alert: Object = ref({
+let alert : any = ref({
   message: '',
   error: false
 })
 
 const loginIn = () => {
-  if (input.username === '' || input.password === '') {
+  if (input.value.username === '' || input.value.password === '') {
     alert.value.message = 'Please fill in all fields';
     alert.value.error = true;
     return;
@@ -66,7 +66,7 @@ const loginIn = () => {
         <router-link class="ml-2 links" to="/register">Register</router-link>
       </p>
 
-      <buttons>Login In</buttons>
+      <buttons class="w-full">Login In</buttons>
     </form>
   </div>
 </template>

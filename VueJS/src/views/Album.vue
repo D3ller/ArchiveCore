@@ -5,6 +5,10 @@ import {onMounted, ref} from 'vue';
 import axios from 'axios';
 import {getSvgPath} from 'figma-squircle';
 import Tracks from "../components/tracks.vue";
+import Buttons from "../components/button/buttons.vue";
+import {Player} from "../stores/account.js";
+
+let player = Player();
 let route = useRoute();
 let id = route.params.id;
 
@@ -41,7 +45,6 @@ axios.get(`http://localhost:5132/api/album/find/${id}`, {
     .then((response) => {
       album.value = response.data;
       for(let i = 0; i < response.data.songs.length; i++) {
-        console.log(response.data.songs)
         for(let j = 0; j < response.data.songs[i].Featurings.length; j++) {
           featured.value.push([response.data.songs[i].Featurings[j].artist])
         }
@@ -53,6 +56,27 @@ axios.get(`http://localhost:5132/api/album/find/${id}`, {
     .catch((err) => {
       console.error(err);
     });
+
+let playAlbum = () => {
+  for (let i = album.value.songs.length - 1; i > 0; i--) {
+    player.addToQueueFirst({
+      title: album.value.songs[i].title,
+      url: 'http://localhost:5132/file/song/' + album.value.songs[i].slug,
+      duration: album.value.songs[i].duration,
+      coverURL: 'http://localhost:5132/file/cover/' + album.value.slug,
+      artist: album.value.artist.name
+    });
+  }
+  player.setSong({
+    title: album.value.songs[0].title,
+    url: 'http://localhost:5132/file/song/' + album.value.songs[0].slug,
+    duration: album.value.songs[0].duration,
+    coverURL: 'http://localhost:5132/file/cover/' + album.value.slug,
+    artist: album.value.artist.name
+  })
+};
+
+
 
 
 </script>
@@ -68,6 +92,7 @@ axios.get(`http://localhost:5132/api/album/find/${id}`, {
         <h1>{{ album.title }}</h1>
         <artist-bubble :to="'/artist/' + album.artist.slug" class="mt-2" :artist="album.artist.name"
                        :avatarURL="album.artist.avatarURL" :name="album.artist.name"></artist-bubble>
+        <buttons class="w-fit mt-5" type="border" @click="playAlbum()">Play Album</buttons>
       </div>
 
     </div>

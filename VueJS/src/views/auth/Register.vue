@@ -6,14 +6,14 @@ import Alerts from "../../components/alerts.vue";
 import Buttons from "../../components/button/buttons.vue";
 import router from "../../router";
 
-let input: Object = ref({
+let input: any = ref({
   email: '',
   username: '',
   password: '',
   confirm_password: ''
 })
 
-let alert: Object = ref({
+let alert: any = ref({
   message: '',
   error: false
 })

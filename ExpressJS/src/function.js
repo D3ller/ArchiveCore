@@ -16,3 +16,11 @@ export const findSongById = async (id) => {
         },
     });
 }
+
+export const findSongBySlug = async (slug) => {
+    return prisma.song.findUnique({
+        where: {
+            slug: slug,
+        },
+    });
+}

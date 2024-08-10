@@ -40,24 +40,38 @@ let props = defineProps({
     required: false
   },
   artist: {
-    type: String,
+    type: Object,
     required: false
   },
   to: {
     type: Object,
     required: false,
     default: {name: 'home'}
+  },
+  album: {
+    type: Object,
+    required: false
+  },
+  artistAvatar: {
+    type: String,
+    required: false
   }
 })
-
 </script>
 
 <template>
 <router-link :to="to" class="track-details">
-  <div class="track-icon" :style="{clipPath: rounded, backgroundImage: `url(${coverUrl})`}" ref="cover"></div>
+  <div
+      class="track-icon"
+      :style="{
+        clipPath: rounded,
+        backgroundImage: `url(${album && album.coverURL ? 'http://localhost:5132' + album.coverURL : coverUrl && coverUrl !== 'null' ? 'http://localhost:5132' + coverUrl : artist ? 'http://localhost:5132' + artist.avatarURL : 'http://localhost:5132' +artistAvatar})`
+    }"
+      ref="cover">
+  </div>
   <div class="track-info">
     <p class="track-title" v-if="title">{{ title }}</p>
-    <p class="track-artist" v-if="artist">{{ artist }}</p>
+    <p class="track-artist" v-if="artist">{{ artist.name }}</p>
   </div>
 </router-link>
 </template>

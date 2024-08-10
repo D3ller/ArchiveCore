@@ -3,7 +3,7 @@
   "version": "28.1.0",
   "main": "dist-electron/main/index.js",
   "description": "VueJS Electron Vite",
-  "author": "草鞋没号 <308487730@qq.com>",
+  "author": "Karibsen <karibsen.fr>",
   "license": "MIT",
   "private": true,
   "keywords": [
@@ -20,13 +20,14 @@
   },
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build && electron-builder",
-    "preview": "vite preview"
+    "dev": "cross-env NODE_ENV=development vite",
+    "build": "cross-env NODE_ENV=production vue-tsc --noEmit && vite build && electron-builder",
+    "preview": "cross-env NODE_ENV=production vite preview"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
     "autoprefixer": "^10.4.20",
+    "cross-env": "^7.0.3",
     "electron": "^29.1.1",
     "electron-builder": "^24.13.3",
     "postcss": "^8.4.40",
@@ -40,9 +41,11 @@
   },
   "dependencies": {
     "axios": "^1.7.3",
+    "electron-cookies": "github:heap/electron-cookies",
     "figma-squircle": "^0.3.1",
     "lodash": "^4.17.21",
     "pinia": "^2.2.0",
+    "socket.io-client": "^4.7.5",
     "vue-router": "^4.4.2"
   }
 }

@@ -1,25 +1,25 @@
 <script setup>
-import {useRoute} from 'vue-router';
-import {onMounted, ref} from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { onMounted, ref, watch } from 'vue';
 import axios from 'axios';
-import {getSvgPath} from 'figma-squircle';
+import { getSvgPath } from 'figma-squircle';
 import Tracks from "../components/tracks.vue";
 import Notfound from "../components/notfound.vue";
 import TrackDetails from "../components/track-details.vue";
-import {useAccount} from "../stores/account.js";
-import router from "../router/index.js";
+import { useAccount } from "../stores/account.js";
+import Buttons from "../components/button/buttons.vue";
 
 let account = useAccount();
 
 const route = useRoute();
-const id = route.params.id;
+const router = useRouter();
 const artist = ref(null);
 const feat = ref(null);
 const cover = ref(null);
 const rounded = ref(null);
 const error = ref(null);
 const subscription = ref(null);
-
+const subscribed = ref(null);
 
 function roundedClipPath() {
   if (cover.value) {
@@ -42,43 +42,54 @@ function roundedClipPath() {
   }
 }
 
-axios.get(`http://localhost:5132/api/artist/find/${id}`, {
-  withCredentials: true
-})
-    .then((response) => {
-      artist.value = response.data;
-      subscription.value = response.data.subscribed;
-      setTimeout(() => {
-        roundedClipPath();
-      }, 0.1);
-
-    })
-    .catch((err) => {
-      error.value = true;
-    });
+function fetchArtistData(id) {
+  axios.get(`http://localhost:5132/api/artist/find/${id}`, {
+    withCredentials: true
+  })
+      .then((response) => {
+        artist.value = response.data;
+        subscription.value = response.data.subscribed;
+        subscribed.value = response.data._count.subscription;
+        setTimeout(() => {
+          roundedClipPath();
+        }, 0.1);
+      })
+      .catch((err) => {
+        error.value = true;
+      });
+}
 
 let toggleSubscription = () => {
   if (account.connected) {
     axios.post('http://localhost:5132/api/subscribe/toggle', {
-      artistid: id,
+      artistid: route.params.id,
     }, {
       withCredentials: true
     })
         .then((response) => {
-          subscription.value = response.data.subscribed
+          subscription.value = response.data.subscribed;
+          response.data.subscribed ? subscribed.value++ : subscribed.value--;
         })
         .catch((err) => {
           if (err.response.status === 429) {
             subscription.value = 'Too many attempts';
           }
-          if(err.response.status === 401) {
-            router.push({name: 'login', query: {redirect: route.fullPath}});
+          if (err.response.status === 401) {
+            router.push({ name: 'login', query: { redirect: route.fullPath } });
           }
         });
   } else {
-    router.push({name: 'login', query: {redirect: route.fullPath}});
+    router.push({ name: 'login', query: { redirect: route.fullPath } });
   }
-}
+};
+
+onMounted(() => {
+  fetchArtistData(route.params.id);
+});
+
+watch(() => route.params.id, (newId) => {
+  fetchArtistData(newId);
+});
 </script>
 
 <template>
@@ -89,7 +100,7 @@ let toggleSubscription = () => {
            ref="cover"></div>
       <div class="artist-content">
         <h1>{{ artist.name }}</h1>
-        <p class="paragraph">123k followers</p>
+        <p class="paragraph">{{ subscribed }} followers | {{artist.listener}} monthly listeners</p>
         <button
             :class="{
 
@@ -122,10 +133,14 @@ let toggleSubscription = () => {
         <div class="release-content">
           <track-details v-for="recent in artist.recentSongs" :to="{name: 'song', params: {id: recent.slug}}"
                          :title="recent.title"
-                         :cover-url="'http://localhost:5132/file/cover/'+`${recent.album ? recent.album.slug : recent.slug}`"></track-details>
-          <track-details class="invisible" v-for="i in 4 - artist.recentSongs.length" :key="i" title="No song"
-                         cover-url="ddd"></track-details>
+                         :album="recent.album"
+                         :artistAvatar="artist.avatarURL"
+                         :cover-url="recent.coverURL"></track-details>
         </div>
+      </div>
+
+      <div class="flex justify-center items-center">
+        <buttons class="w-fit mt-10" type="border">Discover More</buttons>
       </div>
 
       <div class="release" v-if="artist.Album.length > 0">
@@ -133,16 +148,21 @@ let toggleSubscription = () => {
 
         <div class="release-content">
           <track-details v-for="album in artist.Album" :to="{name: 'album', params: {id: album.slug}}"
-                         :title="album.title"
-                         :cover-url="'http://localhost:5132/file/cover/'+`${album.slug}`"></track-details>
-          <track-details class="invisible" v-for="i in 4 - artist.Album.length" :key="i" title="No song"
-                         cover-url="ddd"></track-details>
+                         :title="album.title" :album="album"
+                         :cover-url="album.coverURL"></track-details>
         </div>
 
       </div>
 
       <div class="release" v-if="artist.feat.length > 0">
         <h2>Appears On</h2>
+
+        <div class="release-content">
+
+          <track-details v-for="(ft, i) in artist.feat" :to="{name: 'song', params: {id: ft.song.slug}}" :artist="ft.song.artist"
+                         :title="ft.song.title" :album="ft.song.album" :cover-url="ft.song.coverURL">
+          </track-details>
+        </div>
       </div>
 
     </div>

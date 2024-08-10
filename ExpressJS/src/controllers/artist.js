@@ -2,6 +2,8 @@ import {PrismaClient} from '@prisma/client';
 
 const prisma = new PrismaClient();
 import crypto from 'crypto';
+const startOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+const endOfMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0);
 
 export const getArtistBySlug = async (req, res) => {
     const {slug} = req.params;
@@ -33,6 +35,7 @@ export const getArtistBySlug = async (req, res) => {
                     album: {
                       select: {
                           slug: true,
+                          coverURL: true
                       }
                     },
                     history: {
@@ -57,6 +60,11 @@ export const getArtistBySlug = async (req, res) => {
                     coverURL: true,
                     slug: true,
                 }
+            },
+            _count: {
+                select: {
+                    subscription: true,
+                }
             }
         }
     });
@@ -65,6 +73,24 @@ export const getArtistBySlug = async (req, res) => {
     if (!artist) {
         return res.status(404).json({error: 'Artist not found'});
     }
+
+    const listener = await prisma.history.groupBy({
+        by: ['account_id'],
+        where: {
+            date: {
+                gte: startOfMonth,
+                lte: endOfMonth
+            },
+            song: {
+                artist_id: artist.id
+            }
+        },
+        _count: {
+            account_id: true
+        }
+    });
+
+    artist.listener = listener.length;
 
     if (req.session.loggedin) {
         if (req.session.userId) {
@@ -94,7 +120,8 @@ export const getArtistBySlug = async (req, res) => {
             duration: true,
             album: {
                 select: {
-                    slug: true
+                    slug: true,
+                    coverURL: true
                 }
             }
         }
@@ -104,7 +131,6 @@ export const getArtistBySlug = async (req, res) => {
         where: {
             artist_id: artist.id
         },
-        take: 4,
         select: {
             song: {
                 select: {
@@ -117,6 +143,12 @@ export const getArtistBySlug = async (req, res) => {
                             name: true,
                             slug: true,
                             avatarURL: true
+                        }
+                    },
+                    album: {
+                        select: {
+                            slug: true,
+                            coverURL: true
                         }
                     }
                 }
@@ -132,17 +164,24 @@ export const addArtist = async (req, res) => {
         return res.status(401).json({error: 'Unauthorized'});
     }
 
-    if (req.session.userId !== 16) {
+    if (req.session.userId !== 2) {
         return res.status(403).json({error: 'Forbidden'});
     }
 
-    const {name, avatarURL} = req.body;
+    let {name, slug} = req.body;
 
-    const slug = crypto.randomBytes(60).toString('base64').slice(0, 60).replace(/\+/g, '0').replace(/\//g, '0')
+    if (!name) {
+        return res.status(400).json({error: 'Name is required'});
+    }
+
+    if(!slug) {
+        slug = crypto.randomBytes(45).toString('base64').replace(/\+/g, '0').replace(/\//g, '0').substring(0, 60);
+    }
+
     const artist = await prisma.artist.create({
         data: {
             name,
-            avatarURL,
+            avatarURL:'/file/artist/'+slug,
             slug
         }
     });
@@ -152,4 +191,31 @@ export const addArtist = async (req, res) => {
     }
 
     return res.status(201).json(artist);
+}
+
+export const getAllArtists = async (req, res) => {
+
+    if(!req.session.loggedin) {
+        return res.status(401).json({error: 'Unauthorized'});
+    }
+
+    if(req.session.userId !== 2) {
+        return res.status(403).json({error: 'Forbidden'});
+    }
+
+    const artists = await prisma.artist.findMany({
+        select: {
+            name: true,
+            id: true,
+        },
+        orderBy: {
+            name: 'asc'
+        }
+    });
+
+    if(!artists) {
+        return res.status(404).json({error: 'No artist found'});
+    }
+
+    return res.status(200).json(artists);
 }

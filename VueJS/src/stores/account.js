@@ -4,8 +4,6 @@ export const useAccount = defineStore('account', {
     state: () => {
         return { connected: false}
     },
-    // could also be defined as
-    // state: () => ({ count: 0 })
     actions: {
         toggle() {
             this.connected = !this.connected
@@ -18,13 +16,21 @@ export const useAccount = defineStore('account', {
 
 export const Player = defineStore('player', {
     state: () => {
-        return {currentSong: null, queue: [], prev: []}
+        return {currentSong: null, queue: [], prev: [], volume: 0.5}
     },
 
     actions: {
         setSong(song) {
             console.log('setSong', song)
             this.currentSong = song
+        },
+
+        addToQueueFirst(song) {
+            this.queue.unshift(song)
+        },
+
+        bulkSetSongs(songs) {
+            this.addToQueueFirst(songs)
         },
 
         addToQueue(song) {
@@ -34,6 +40,10 @@ export const Player = defineStore('player', {
         addToPrevious(song) {
             this.prev.push(song)
         },
+
+        setVolume(volume) {
+            this.volume = volume
+        }
 
     },
 })

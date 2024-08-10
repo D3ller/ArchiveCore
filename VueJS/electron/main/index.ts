@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain } from 'electron'
+import { app, BrowserWindow, shell, ipcMain, session } from 'electron'
 import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
@@ -81,11 +81,11 @@ async function createWindow() {
     })
 
   if (VITE_DEV_SERVER_URL) { // #298
-    win.loadURL(VITE_DEV_SERVER_URL)
+    await win.loadURL(VITE_DEV_SERVER_URL)
     // Open devTool if the app is not packaged
     win.webContents.openDevTools()
   } else {
-    win.loadFile(indexHtml)
+    await win.loadFile(indexHtml)
   }
 
   // Test actively push message to the Electron-Renderer
@@ -99,6 +99,21 @@ async function createWindow() {
     return { action: 'deny' }
   })
   // win.webContents.on('will-navigate', (event, url) => { }) #344
+  session.defaultSession.webRequest.onHeadersReceived({ urls: ['*://*/*'] }, (details, callback) => {
+  const cookies = details.responseHeaders['Set-Cookie'];
+  if(cookies) {
+    const newCookie = Array.from(cookies)
+        .map(cookie => cookie.concat('; SameSite=None; Secure'));
+    details.responseHeaders['Set-Cookie'] = [...newCookie];
+    callback({
+      responseHeaders: details.responseHeaders,
+    });
+  } else {
+    callback({ cancel: false });
+  }
+}
+
+  );
 }
 
 app.whenReady().then(createWindow)

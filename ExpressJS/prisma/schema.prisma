@@ -8,92 +8,169 @@ datasource db {
 }
 
 model account {
-  id Int @id @default(autoincrement())
-  username String @unique @db.VarChar(35)
-  bio String @default("No bio") @db.VarChar(100)
-  email String @unique
-  creation_date DateTime @default(now())
-  bannerURL String @default("https://cdn.discordapp.com/attachments/891978000000000000/891978000000000000/unknown.png")
-  avatarURL String @default("https://cdn.discordapp.com/attachments/891978000000000000/891978000000000000/unknown.png")
-  password String
-  songs song[]
-  history history[]
-  Favorite Favorite[]
-  subscription Subscription[]
+  id             Int              @id @default(autoincrement())
+  username       String           @unique @db.VarChar(35)
+  email          String           @unique
+  creation_date  DateTime         @default(now()) @db.Timestamptz(0)
+  avatarURL      String           @default("https://cdn.discordapp.com/attachments/891978000000000000/891978000000000000/unknown.png")
+  password       String
+  bio            String           @default("No bio") @db.VarChar(100)
+  bannerURL      String           @default("https://cdn.discordapp.com/attachments/891978000000000000/891978000000000000/unknown.png")
+  role_id        Int              @default(1)
+  Favorite       Favorite[]
+  Playlist       Playlist[]
+  subscription   Subscription[]
+  Role           Role             @relation(fields: [role_id], references: [id])
+  history        history[]
+  songs          song[]
+  startListening startListening[]
+  sentMessages     Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+  sentFriendRequests     Friends[] @relation("FriendsRequested")
+  receivedFriendRequests Friends[] @relation("FriendsAccepted")
+}
+
+model Role {
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
+  account account[]
 }
 
 model song {
-  id Int @id @default(autoincrement())
-  slug  String? @unique @db.VarChar(60) @default(cuid())
-  title String @db.VarChar(100)
-  coverURL String
-  songURL String
-  publication_date DateTime @default(now())
-  created_at DateTime @default(now())
-  user_id Int
-  artist_id Int
-  album_id Int?
-  duration Int
-  account account @relation(fields: [user_id], references: [id])
-  artist artist @relation(fields: [artist_id], references: [id])
-  album Album? @relation(fields: [album_id], references: [id])
-  history history[]
-  Favorite Favorite[]
-  Featurings Featurings[]
+  id               Int              @id @default(autoincrement())
+  title            String           @db.VarChar(100)
+  coverURL         String
+  songURL          String
+  publication_date DateTime         @default(now())
+  user_id          Int
+  artist_id        Int
+  duration         Int
+  slug             String?          @unique @default(cuid()) @db.VarChar(60)
+  created_at       DateTime         @default(now()) @db.Timestamptz(0)
+  album_id         Int?
+  Favorite         Favorite[]
+  Featurings       Featurings[]
+  PlaylistSong     PlaylistSong[]
+  history          history[]
+  album            Album?           @relation(fields: [album_id], references: [id])
+  artist           artist           @relation(fields: [artist_id], references: [id])
+  account          account          @relation(fields: [user_id], references: [id])
+  startListening   startListening[]
 }
 
 model artist {
-  id Int @id @default(autoincrement())
-  name String @unique @db.VarChar(100)
-  slug String? @unique @db.VarChar(60) @default(cuid())
-  songs song[]
-  avatarURL String
+  id           Int            @id @default(autoincrement())
+  name         String         @unique @db.VarChar(100)
+  avatarURL    String
+  slug         String?        @unique @default(cuid()) @db.VarChar(60)
+  Album        Album[]
+  Featurings   Featurings[]
   subscription Subscription[]
-  Album Album[]
-  Featurings Featurings[]
+  songs        song[]
 }
 
 model history {
-  id Int @id @default(autoincrement())
-  song_id Int
+  id         Int      @id @default(autoincrement())
+  song_id    Int
   account_id Int
-  date DateTime @default(now())
-  account account @relation(fields: [account_id], references: [id])
-  song song @relation(fields: [song_id], references: [id])
+  date       DateTime @default(now()) @db.Timestamptz(0)
+  account    account  @relation(fields: [account_id], references: [id])
+  song       song     @relation(fields: [song_id], references: [id])
+}
+
+model startListening {
+  id         Int      @id @default(autoincrement())
+  song_id    Int
+  account_id Int
+  date       DateTime @default(now()) @db.Timestamptz(0)
+  account    account  @relation(fields: [account_id], references: [id])
+  song       song     @relation(fields: [song_id], references: [id])
 }
 
 model Favorite {
-  id Int @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   account_id Int
-  song_id Int
-  account account @relation(fields: [account_id], references: [id])
-  song song @relation(fields: [song_id], references: [id])
+  song_id    Int
+  created_at DateTime @default(now()) @db.Timestamptz(0)
+  account    account  @relation(fields: [account_id], references: [id])
+  song       song     @relation(fields: [song_id], references: [id])
 }
 
 model Subscription {
-  id Int @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   account_id Int
-  artist_id Int
-  account account @relation(fields: [account_id], references: [id])
-  artist artist @relation(fields: [artist_id], references: [id])
+  artist_id  Int
+  created_at DateTime @default(now()) @db.Timestamptz(0)
+  account    account  @relation(fields: [account_id], references: [id])
+  artist     artist   @relation(fields: [artist_id], references: [id])
 }
 
 model Album {
-  id Int @id @default(autoincrement())
-  title String @db.VarChar(100)
-  coverURL String
+  id               Int      @id @default(autoincrement())
+  title            String   @db.VarChar(100)
+  coverURL         String
   publication_date DateTime @default(now())
-  created_at DateTime @default(now())
-  artist_id Int
-  slug String? @unique @db.VarChar(60) @default(cuid())
-  artist artist @relation(fields: [artist_id], references: [id])
-  songs song[]
+  created_at       DateTime @default(now()) @db.Timestamptz(0)
+  artist_id        Int
+  slug             String?  @unique @default(cuid()) @db.VarChar(60)
+  artist           artist   @relation(fields: [artist_id], references: [id])
+  songs            song[]
 }
 
 model Featurings {
-  id Int @id @default(autoincrement())
-  song_id Int
+  id        Int    @id @default(autoincrement())
+  song_id   Int
   artist_id Int
-  song song @relation(fields: [song_id], references: [id])
-  artist artist @relation(fields: [artist_id], references: [id])
+  artist    artist @relation(fields: [artist_id], references: [id])
+  song      song   @relation(fields: [song_id], references: [id])
+}
+
+model Playlist {
+  id          Int            @id @default(autoincrement())
+  title       String         @db.VarChar(100)
+  description String         @db.VarChar(255)
+  coverURL    String
+  created_at  DateTime       @default(now()) @db.Timestamptz(0)
+  account_id  Int
+  slug        String?        @unique @default(cuid()) @db.VarChar(60)
+  privacy     Boolean        @default(false)
+  account     account        @relation(fields: [account_id], references: [id])
+  songs       PlaylistSong[]
+}
+
+model PlaylistSong {
+  id          Int      @id @default(autoincrement())
+  playlist_id Int
+  song_id     Int
+  order       Int      @default(autoincrement())
+  added_at    DateTime @default(now()) @db.Timestamptz(0)
+  playlist    Playlist @relation(fields: [playlist_id], references: [id])
+  song        song     @relation(fields: [song_id], references: [id])
+}
+
+model Friends {
+  id          Int      @id @default(autoincrement())
+  requesterId Int
+  accepterId  Int
+  status      String   @default("pending") // or "accepted", "rejected"
+  created_at  DateTime @default(now()) @db.Timestamptz(0)
+  updated_at  DateTime @updatedAt @db.Timestamptz(0)
+
+  requester   account  @relation("FriendsRequested", fields: [requesterId], references: [id])
+  accepter    account  @relation("FriendsAccepted", fields: [accepterId], references: [id])
+
+  @@unique([requesterId, accepterId])
+
+
+}
+
+model Message {
+  id          Int      @id @default(autoincrement())
+  content     String   @db.VarChar(1000)
+  senderId    Int
+  receiverId  Int
+  createdAt   DateTime @default(now()) @db.Timestamptz(0)
+  updatedAt   DateTime @updatedAt @db.Timestamptz(0)
+  sender      account  @relation("SentMessages", fields: [senderId], references: [id])
+  receiver    account  @relation("ReceivedMessages", fields: [receiverId], references: [id])
 }

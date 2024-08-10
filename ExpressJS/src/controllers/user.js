@@ -41,7 +41,7 @@ export const registerAccount = async (req, res) => {
             data: {
                 username,
                 password: hashedPassword,
-                email
+                email,
             }
         });
         return res.status(201).json({message: 'User registered successfully', userId: newUser.id});

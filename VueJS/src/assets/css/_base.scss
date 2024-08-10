@@ -29,6 +29,8 @@ tr, th, td {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
+  user-select: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 article,
@@ -109,4 +111,15 @@ q:before {
 
 :focus:not(:focus-visible) {
   outline: none;
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
