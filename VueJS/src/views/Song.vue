@@ -1,29 +1,28 @@
-<script setup>
+<script lang="ts" setup>
 import { useRoute, useRouter } from 'vue-router';
-import { onMounted, ref, watch } from 'vue';
-import axios from 'axios';
+import {onMounted, Ref, ref, watch} from 'vue';
+import axios, {AxiosError, AxiosResponse} from 'axios';
 import ArtistBubble from "../components/artist/ArtistBubble.vue";
 import { getSvgPath } from 'figma-squircle';
 import Tracks from "../components/tracks.vue";
 import Notfound from "../components/notfound.vue";
 import Buttons from "../components/button/buttons.vue";
 import {Player} from "../stores/account.js";
+import {Song} from "../interface"
 
 let player = Player();
 const route = useRoute();
-const router = useRouter();
-const song = ref(null);
-const cover = ref(null);
-const rounded = ref(null);
-const error = ref(null);
-const artist = ref([]);
-const lyrics = ref(null);
+const song : Ref<Song> = ref(null);
+const cover : Ref<HTMLDivElement> = ref(null);
+const rounded : Ref<string> = ref(null);
+const error : Ref<boolean> = ref(false);
+const artist : Ref<Array<any>> = ref([]);
+const lyrics : Ref<string> = ref('');
 
-function roundedClipPath() {
+function roundedClipPath() : void {
   if (cover.value) {
     const width = cover.value.clientWidth;
     const height = cover.value.clientHeight;
-
     try {
       const svgPath = getSvgPath({
         width,
@@ -40,11 +39,11 @@ function roundedClipPath() {
   }
 }
 
-function fetchSongData(id) {
+function fetchSongData(id : string) : void {
   axios.get(`https://192.168.1.158:5132/api/song/find/${id}`, {
     withCredentials: true
   })
-      .then((response) => {
+      .then((response : AxiosResponse<any>) => {
         song.value = response.data;
         artist.value = [];
         for (let i = 0; i < response.data.Featurings.length; i++) {
@@ -53,42 +52,42 @@ function fetchSongData(id) {
         }
         setTimeout(() => {
           roundedClipPath();
-        }, 0.1);
+        }, 1);
 
         axios.post('https://192.168.1.158:5132/api/song/lyric', {artist: song.value.artist.name, title: song.value.title}, {
           withCredentials: true
-        }).then((response) => {
+        }).then((response : AxiosResponse<{lyrics: string}>) => {
           lyrics.value = response.data.lyrics.replace(/\n/g, '<br>');
-        }).catch((err) => {
+        }).catch((err : AxiosError) => {
           console.error(err);
         });
 
 
       })
-      .catch((err) => {
+      .catch((err : AxiosError) => {
         error.value = true;
       });
 }
 
-const msToSecAndMin = (ms) => {
-  let min = Math.floor(ms / 60000);
-  let sec = ((ms % 60000) / 1000).toFixed(0);
-  return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+const msToSecAndMin = (ms : number) => {
+  let min : number = Math.floor(ms / 60000);
+  let sec : string = ((ms % 60000) / 1000).toFixed(0);
+  return min + ':' + (parseInt(sec) < 10 ? '0' : '') + sec;
 };
 
 onMounted(() => {
-  fetchSongData(route.params.id);
+  fetchSongData(route.params.id as string);
 });
 
-watch(() => route.params.id, (newId) => {
-  fetchSongData(newId);
+watch(() => route.params.id, (newId: string) => {
+  fetchSongData(newId as string);
 });
 
-const playSingle = () => {
+const playSingle = () : void => {
   player.setSong({
     title: song.value.title,
     url: `https://192.168.1.158:5132/file/song/${song.value.slug}`,
-    duration: song.value.duration,
+    duration: parseInt(song.value.duration),
     coverURL: `https://192.168.1.158:5132/file/${song.value.coverURL === 'null' || song.value.coverURL === null ? 'artist' : 'cover'}/${song.value.coverURL === 'null' || song.value.coverURL === null ? song.value.artist.slug : song.slug}`,
     artist: song.value.artist.name
   });

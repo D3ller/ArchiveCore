@@ -1,25 +1,35 @@
-<script setup>
-import { useRoute, useRouter } from 'vue-router';
-import { onMounted, ref, watch } from 'vue';
-import axios from 'axios';
-import { getSvgPath } from 'figma-squircle';
+<script lang="ts" setup>
+import {useRoute, useRouter} from 'vue-router';
+import {onMounted, ref, watch} from 'vue';
+import axios, {AxiosError} from 'axios';
+import {getSvgPath} from 'figma-squircle';
 import Tracks from "../components/tracks.vue";
 import Notfound from "../components/notfound.vue";
 import TrackDetails from "../components/track-details.vue";
-import { useAccount } from "../stores/account.js";
+import {useAccount} from "../stores/account.js";
 import Buttons from "../components/button/buttons.vue";
+import {AxiosResponse} from "axios";
+import {Ref} from "vue";
+import {Artist} from "../interface"
+
 
 let account = useAccount();
-
 const route = useRoute();
 const router = useRouter();
-const artist = ref(null);
-const feat = ref(null);
-const cover = ref(null);
-const rounded = ref(null);
-const error = ref(null);
-const subscription = ref(null);
-const subscribed = ref(null);
+const artist: Ref<Artist> = ref(null);
+const cover: Ref<HTMLDivElement> = ref(null);
+const rounded: Ref<string> = ref(null);
+const error: Ref<boolean> = ref(false);
+const subscription: Ref<boolean | string> = ref(null);
+const subscribed: Ref<number> = ref(0);
+
+onMounted(() => {
+  fetchArtistData(route.params.id as string);
+});
+
+watch(() => route.params.id, (newId: string | string[]) => {
+  fetchArtistData(newId as string);
+});
 
 function roundedClipPath() {
   if (cover.value) {
@@ -42,11 +52,12 @@ function roundedClipPath() {
   }
 }
 
-function fetchArtistData(id) {
+function fetchArtistData(id: string | string[]): void {
   axios.get(`https://192.168.1.158:5132/api/artist/find/${id}`, {
     withCredentials: true
   })
-      .then((response) => {
+      .then((response: AxiosResponse<{ subscribed: boolean, _count: { subscription: number }}>) => {
+        //@ts-ignore
         artist.value = response.data;
         subscription.value = response.data.subscribed;
         subscribed.value = response.data._count.subscription;
@@ -54,42 +65,36 @@ function fetchArtistData(id) {
           roundedClipPath();
         }, 0.1);
       })
-      .catch((err) => {
+      .catch(() => {
         error.value = true;
       });
 }
 
-let toggleSubscription = () => {
+let toggleSubscription = (): void => {
   if (account.connected) {
     axios.post('https://192.168.1.158:5132/api/subscribe/toggle', {
       artistid: route.params.id,
     }, {
       withCredentials: true
     })
-        .then((response) => {
+        .then((response: AxiosResponse) => {
           subscription.value = response.data.subscribed;
           response.data.subscribed ? subscribed.value++ : subscribed.value--;
         })
-        .catch((err) => {
+        .catch((err: AxiosError) => {
           if (err.response.status === 429) {
             subscription.value = 'Too many attempts';
           }
           if (err.response.status === 401) {
-            router.push({ name: 'login', query: { redirect: route.fullPath } });
+            router.push({name: 'login', query: {redirect: route.fullPath}});
           }
         });
   } else {
-    router.push({ name: 'login', query: { redirect: route.fullPath } });
+    router.push({name: 'login', query: {redirect: route.fullPath}});
   }
 };
 
-onMounted(() => {
-  fetchArtistData(route.params.id);
-});
 
-watch(() => route.params.id, (newId) => {
-  fetchArtistData(newId);
-});
 </script>
 
 <template>
@@ -100,7 +105,7 @@ watch(() => route.params.id, (newId) => {
            ref="cover"></div>
       <div class="artist-content">
         <h1>{{ artist.name }}</h1>
-        <p class="paragraph">{{ subscribed }} followers | {{artist.listener}} monthly listeners</p>
+        <p class="paragraph">{{ subscribed }} followers | {{ artist.listener }} monthly listeners</p>
         <button
             :class="{
 
@@ -159,7 +164,8 @@ watch(() => route.params.id, (newId) => {
 
         <div class="release-content">
 
-          <track-details v-for="(ft, i) in artist.feat" :to="{name: 'song', params: {id: ft.song.slug}}" :artist="ft.song.artist"
+          <track-details v-for="(ft) in artist.feat" :to="{name: 'song', params: {id: ft.song.slug}}"
+                         :artist="ft.song.artist"
                          :title="ft.song.title" :album="ft.song.album" :cover-url="ft.song.coverURL">
           </track-details>
         </div>

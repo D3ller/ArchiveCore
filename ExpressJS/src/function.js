@@ -33,3 +33,40 @@ export const getCurrentPendingRequests = async (userId) => {
         },
     });
 }
+
+export const findUserByUsernameOrEmail = async (username) => {
+    return prisma.account.findFirst({
+        where: {
+            OR: [
+                { email: username },
+                { username: username },
+            ],
+        },
+    });
+}
+
+export const getFriendsByUserId = async (userId) => {
+    return prisma.friends.findMany({
+        where: {
+            OR: [
+                { requesterId: userId },
+                { accepterId: userId },
+            ],
+            status: 'accepted',
+        },
+        include: {
+            requester: {
+                select: {
+                    username: true,
+                    avatarURL: true,
+                },
+            },
+            accepter: {
+                select: {
+                    username: true,
+                    avatarURL: true,
+                },
+            },
+        },
+    });
+}

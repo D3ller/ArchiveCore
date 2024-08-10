@@ -1,13 +1,8 @@
-<!--suppress ALL -->
-
-
-
-<script>
+<script setup>
 import Buttons from "../../../components/button/buttons.vue";
 import Modal from "../../../components/modal/modal.vue";
 import {ref} from "vue";
 import axios from "axios";
-import Alerts from "../../../components/alerts.vue";
 import Cselect from "../../../components/input/cselect.vue";
 
 let artist = ref(null)
@@ -52,7 +47,7 @@ let modal = ref({
 })
 
 let addSong = () => {
-  axios.post('https://192.168.1.158:5132/api/song/add', {
+  axios.post('http://localhost:5132/api/song/add', {
     title: modal.value.addModal.title,
     slugs: modal.value.addModal.slug,
     duration: parseInt(modal.value.addModal.duration),
@@ -72,7 +67,7 @@ let addSong = () => {
 }
 
 let addFeature = () => {
-  axios.post('https://192.168.1.158:5132/api/song/addFeature', {
+  axios.post('http://localhost:5132/api/song/addFeature', {
     songId: parseInt(modal.value.featureModal.songID),
     artistId: parseInt(modal.value.featureModal.artistID)
   }, {

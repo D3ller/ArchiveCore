@@ -33,11 +33,22 @@ export const getFriends = async (req, res) => {
             }
         });
 
-        if(!friends) {
-            return res.status(404).json({message: 'No friends found'});
-        }
+        const pendingRequests = await prisma.friends.findMany({
+            where: {
+                accepterId: req.session.userId,
+                status: "pending"
+            },
+            include: {
+                requester: {
+                    select: {
+                        username: true,
+                        avatarURL: true
+                    }
+                }
+            }
+        });
 
-        return res.status(200).json(friends);
+        return res.status(200).json({friends: friends, pending: pendingRequests});
     } catch (err) {
         console.error(err);
         return res.status(500).json({message: 'An error occurred while fetching the friends'});
@@ -97,4 +108,35 @@ export const addFriend = async (req, res) => {
 
     return res.status(200).json({message: 'Friend request sent', userId: req.session.userId});
 
+}
+
+export const acceptFriend = async (req, res) => {
+
+        if(!req.session.userId) {
+            return res.status(401).json({message: 'User is not logged in'});
+        }
+
+        const {userId} = req.body;
+
+        const friendRequest = await prisma.friends.findFirst({
+            where: {
+                requesterId: userId,
+                accepterId: req.session.userId
+            }
+        });
+
+        if(!friendRequest) {
+            return res.status(404).json({message: 'Friend request not found'});
+        }
+
+        await prisma.friends.update({
+            where: {
+                id: friendRequest.id
+            },
+            data: {
+                status: 'accepted'
+            }
+        });
+
+        return res.status(200).json({message: 'Friend request accepted'});
 }

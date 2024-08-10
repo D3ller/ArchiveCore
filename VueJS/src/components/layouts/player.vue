@@ -2,6 +2,7 @@
 import {onMounted, ref, watch} from "vue";
 import {Player, useAccount} from "../../stores/account.js";
 import axios from "axios";
+import socket from "../../socket.ts";
 
 let accounts = useAccount();
 let player = Player();
@@ -22,6 +23,7 @@ watch(() => player.currentSong, (newVal) => {
       }).catch((error) => {
         console.error(error);
       })
+      socket.emit('startListening', player.currentSong);
     }
     audio.src = newVal.url + '.mp3';
     audio.play();

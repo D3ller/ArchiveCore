@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import {RouterLink, RouterView} from 'vue-router'
+import {RouterView} from 'vue-router'
 import Navbar from "./components/layouts/navbar.vue";
-import {onMounted, ref, watch} from "vue";
-import axios from "axios";
+import {onMounted, Ref, ref, watch} from "vue";
+import axios, {AxiosError, AxiosResponse} from "axios";
 import {useAccount, Player} from './stores/account.js';
 import AsideBar from "./components/layouts/asideBar.vue";
 import Players from "./components/layouts/player.vue";
@@ -15,12 +15,19 @@ socket.on("connect", () => {
   console.log(socket.id);
 })
 
-
 const account = useAccount();
 const player = Player();
-let playing = ref(false);
+let playing : Ref<boolean> = ref(false);
 
-watch(() => player.currentSong, (value) => {
+interface newSong {
+  title: string,
+  url: string,
+  duration: number,
+  coverURL: string,
+  artist: string,
+}
+
+watch(() => player.currentSong, (value: newSong | null) => {
   playing.value = !!value;
 })
 
@@ -31,26 +38,26 @@ onMounted(() => {
   axios.get('https://192.168.1.158:5132/api/auth', {
     withCredentials: true
   })
-      .then((response) => {
+      .then((response: AxiosResponse<{userId: string}>) => {
         if (response.status === 200) {
           account.set(true)
         }
         socket.emit('login', response.data.userId)
       })
-      .catch((error) => {
+      .catch((error : AxiosError) => {
         console.log(error);
       })
 })
 
-let closeApp = () => {
+let closeApp = (): void => {
   window.ipcRenderer.send('closeApp');
 }
 
-let minimizeApp = () => {
+let minimizeApp = (): void => {
   window.ipcRenderer.send('minimizeApp');
 }
 
-let maximizeApp = () => {
+let maximizeApp = (): void => {
   window.ipcRenderer.send('maximizeApp');
 }
 

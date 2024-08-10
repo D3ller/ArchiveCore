@@ -339,6 +339,19 @@ q:before {
   @apply text-[#b3b3b3] text-base font-medium block mb-2;
 }
 
+.friends-list {
+  @apply text-white flex justify-between border-[#212121] border-t border-solid py-5 items-center;
+}
+.friends-list .friends-avatar {
+  @apply w-10 h-10 relative;
+}
+.friends-list .friends-avatar img {
+  @apply w-full h-full rounded-full;
+}
+.friends-list .friends-buttons {
+  @apply flex items-center gap-5;
+}
+
 @font-face {
   font-family: "ClashGrotesk-Variable";
   src: url("../fonts/ClashGrotesk-Variable.woff2") format("woff2"), url("../fonts/ClashGrotesk-Variable.woff") format("woff"), url("../fonts/ClashGrotesk-Variable.ttf") format("truetype");

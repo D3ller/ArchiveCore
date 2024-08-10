@@ -1,23 +1,23 @@
 <script setup lang="ts">
 import socket from "../../socket";
 import Buttons from "../../components/button/buttons.vue";
-import {ref} from "vue";
+import {Ref, ref} from "vue";
 import Modal from "../../components/modal/modal.vue";
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import router from "../../router";
 import {useAccount} from "../../stores/account";
+import FriendList from "../../components/friends/friend-list.vue";
 let accounts = useAccount();
 
-let message = ref('');
-let modal = ref({
-  open: false
-})
+let message : Ref<string> = ref('');
+let modal : Ref<{open: boolean}> = ref({open: false});
+let friends : Ref<{pending: any[], friends: any[]}> = ref({pending: [], friends: []});
 
 axios.get('https://192.168.1.158:5132/api/friends/get', {
   withCredentials: true
 })
     .then((response) => {
-      console.log(response.data);
+      friends.value = response.data;
     })
     .catch((err) => {
       if (err.response.status === 401 && err.response.data.message === 'User is not logged in') {
@@ -31,16 +31,16 @@ axios.get('https://192.168.1.158:5132/api/friends/get', {
       }
 })
 
-const addFriend = () => {
+const addFriend = (): void => {
 axios.post('https://192.168.1.158:5132/api/friends/add', {
   username: message.value
 }, {
   withCredentials: true
 })
-    .then((response) => {
+    .then((response : AxiosResponse) => {
       console.log(response.data);
       modal.value.open = false;
-      socket.emit('friendRequest', response.data.userId);
+      socket.emit('friendRequest', message.value);
       message.value = '';
     })
     .catch((err) => {
@@ -57,6 +57,17 @@ axios.post('https://192.168.1.158:5132/api/friends/add', {
   <modal confirm-text="Send request" subtitle="You can add your friends with their username or email address." title="Add your friends" @close="modal.open = false" @send="addFriend" v-if="modal.open">
     <div class="mt-5"><input type="text" class="modal-input" placeholder="Username or email address" v-model="message"/></div>
   </modal>
+
+
+  <div v-if="friends.pending.length > 0" class="mt-10">
+    <h3 class="mb-5">Pending Request</h3>
+    <friend-list v-for="p in friends.pending" :avatar="p.requester.avatarURL" status="Pending" :user="p.requester.username">sss</friend-list>
+  </div>
+
+  <div v-if="friends.friends.length > 0" class="mt-10">
+    <h3 class="mb-5">Friends</h3>
+    <friend-list v-for="f in friends.friends" :avatar="f.requester.avatarURL" status="Friend" :user="f.requester.username">sss</friend-list>
+  </div>
 
 </template>
 

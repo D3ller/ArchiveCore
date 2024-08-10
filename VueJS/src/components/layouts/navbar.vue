@@ -12,6 +12,7 @@ socket.on('pendingRequests', (data) => {
 })
 
 socket.on('friendRequest', () => {
+  console.log('New friend request');
   pendingRequests.value++;
 })
 </script>
@@ -68,8 +69,9 @@ playlist_play
         <div class="navbar-menu">
           <router-link :to="{name: 'dashboard'}" class="navbar-item"><span class="material-symbols-outlined">account_circle</span>Profile
           </router-link>
-          <router-link to="/friends" class="navbar-item"><span class="material-symbols-outlined">artist</span>Friends <span
-              v-if="pendingRequests > 0" class="badge">{{ pendingRequests }}</span>
+          <router-link to="/friends" class="navbar-item"><span class="material-symbols-outlined">artist</span>Friends
+            <span
+                v-if="pendingRequests > 0" class="badge">{{ pendingRequests }}</span>
           </router-link>
           <div class="navbar-item"><span class="material-symbols-outlined">settings</span>Settings</div>
           <router-link :to="{name: 'logout'}" class="navbar-item"><span class="material-symbols-outlined">logout</span>Logout

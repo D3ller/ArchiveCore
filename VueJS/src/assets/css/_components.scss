@@ -97,3 +97,16 @@
 .modal-label {
     @apply text-[#b3b3b3] text-base font-medium block mb-2;
 }
+
+.friends-list {
+  @apply text-white flex justify-between border-[#212121] border-t border-solid py-5 items-center;
+  .friends-avatar {
+    @apply w-10 h-10 relative;
+    img {
+        @apply w-full h-full rounded-full;
+    }
+  }
+  .friends-buttons {
+    @apply flex items-center gap-5;
+  }
+}

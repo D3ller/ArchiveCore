@@ -1,5 +1,5 @@
 import App from "../app.js";
-import {getCurrentPendingRequests} from "../function.js";
+import {findUserByUsernameOrEmail, getCurrentPendingRequests, getFriendsByUserId} from "../function.js";
 const {io} = App;
 const onlineUsers = {};
 
@@ -20,10 +20,29 @@ io.on('connection', (socket) => {
         })
     });
 
-    socket.on('friendRequest', (userId) => {
-        if(onlineUsers[userId]) {
-            io.to(onlineUsers[userId]).emit('friendRequest');
-        }
+    socket.on('friendRequest', (username) => {
+        findUserByUsernameOrEmail(username).then((user) => {
+            if(!user) {
+                return socket.emit('friendRequestError', 'User not found');
+            }
+            if(user.id === Object.keys(onlineUsers).find(key => onlineUsers[key] === socket.id)) {
+                return socket.emit('friendRequestError', 'You cannot send a friend request to yourself');
+            }
+            io.to(onlineUsers[user.id]).emit('friendRequest', user);
+
+        })
+    })
+
+    socket.on('startListening', (song) => {
+        console.log('startListening');
+        let userId = Object.keys(onlineUsers).find(key => onlineUsers[key] === socket.id);
+        console.log(userId);
+        getFriendsByUserId(userId).then((friends) => {
+            friends.forEach((friend) => {
+                io.to(onlineUsers[friend.requesterId]).emit('friendListening', song);
+                io.to(onlineUsers[friend.accepterId]).emit('friendListening', song);
+            })
+        })
     })
 });
 
