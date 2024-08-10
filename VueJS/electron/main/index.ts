@@ -116,6 +116,16 @@ async function createWindow() {
   );
 }
 
+app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
+  // Ignorer les erreurs de certificat seulement pour l'IP locale
+  if (url.startsWith('https://192.168.1.158')) {
+    event.preventDefault();
+    callback(true);
+  } else {
+    callback(false);
+  }
+});
+
 app.whenReady().then(createWindow)
 
 app.on('window-all-closed', () => {

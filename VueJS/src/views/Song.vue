@@ -41,7 +41,7 @@ function roundedClipPath() {
 }
 
 function fetchSongData(id) {
-  axios.get(`http://localhost:5132/api/song/find/${id}`, {
+  axios.get(`https://192.168.1.158:5132/api/song/find/${id}`, {
     withCredentials: true
   })
       .then((response) => {
@@ -55,7 +55,7 @@ function fetchSongData(id) {
           roundedClipPath();
         }, 0.1);
 
-        axios.post('http://localhost:5132/api/song/lyric', {artist: song.value.artist.name, title: song.value.title}, {
+        axios.post('https://192.168.1.158:5132/api/song/lyric', {artist: song.value.artist.name, title: song.value.title}, {
           withCredentials: true
         }).then((response) => {
           lyrics.value = response.data.lyrics.replace(/\n/g, '<br>');
@@ -87,9 +87,9 @@ watch(() => route.params.id, (newId) => {
 const playSingle = () => {
   player.setSong({
     title: song.value.title,
-    url: `http://localhost:5132/file/song/${song.value.slug}`,
+    url: `https://192.168.1.158:5132/file/song/${song.value.slug}`,
     duration: song.value.duration,
-    coverURL: `http://localhost:5132/file/${song.value.coverURL === 'null' || song.value.coverURL === null ? 'artist' : 'cover'}/${song.value.coverURL === 'null' || song.value.coverURL === null ? song.value.artist.slug : song.slug}`,
+    coverURL: `https://192.168.1.158:5132/file/${song.value.coverURL === 'null' || song.value.coverURL === null ? 'artist' : 'cover'}/${song.value.coverURL === 'null' || song.value.coverURL === null ? song.value.artist.slug : song.slug}`,
     artist: song.value.artist.name
   });
 };
@@ -101,7 +101,7 @@ const playSingle = () => {
   <div class="page_track">
     <div class="track" v-if="song">
       <div class="track-icon" :style="{ clipPath: rounded }" ref="cover">
-        <img :src="`http://localhost:5132/file/${song.coverURL === 'null' ? 'artist' : 'cover'}/${song.album ? song.album.slug : song.coverURL === 'null' ? song.artist.slug : song.slug}`" alt="cover" v-if="song">
+        <img :src="`https://192.168.1.158:5132/file/${song.coverURL === 'null' ? 'artist' : 'cover'}/${song.album ? song.album.slug : song.coverURL === 'null' ? song.artist.slug : song.slug}`" alt="cover" v-if="song">
       </div>
       <div class="track-content" v-if="song">
         <p class="paragraph text-sm">Track — {{ msToSecAndMin(song.duration) }}</p>

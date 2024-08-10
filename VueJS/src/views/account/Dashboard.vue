@@ -9,7 +9,7 @@ let account = useAccount();
 let accounts = ref(null)
 
 
-axios.get('http://localhost:5132/api/account/get', {
+axios.get('https://192.168.1.158:5132/api/account/get', {
   withCredentials: true
 })
     .then((response) => {

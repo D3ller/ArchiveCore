@@ -29,7 +29,7 @@ onMounted(() => {
   console.log(process.env.NODE_ENV);
 
 
-  axios.get('http://localhost:5132/api/auth', {
+  axios.get('https://192.168.1.158:5132/api/auth', {
     withCredentials: true
   })
       .then((response) => {

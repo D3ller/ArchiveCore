@@ -39,7 +39,7 @@ function roundedClipPath() {
 }
 
 
-axios.get(`http://localhost:5132/api/album/find/${id}`, {
+axios.get(`https://192.168.1.158:5132/api/album/find/${id}`, {
   withCredentials: true
 })
     .then((response) => {
@@ -61,17 +61,17 @@ let playAlbum = () => {
   for (let i = album.value.songs.length - 1; i > 0; i--) {
     player.addToQueueFirst({
       title: album.value.songs[i].title,
-      url: 'http://localhost:5132/file/song/' + album.value.songs[i].slug,
+      url: 'https://192.168.1.158:5132/file/song/' + album.value.songs[i].slug,
       duration: album.value.songs[i].duration,
-      coverURL: 'http://localhost:5132/file/cover/' + album.value.slug,
+      coverURL: 'https://192.168.1.158:5132/file/cover/' + album.value.slug,
       artist: album.value.artist.name
     });
   }
   player.setSong({
     title: album.value.songs[0].title,
-    url: 'http://localhost:5132/file/song/' + album.value.songs[0].slug,
+    url: 'https://192.168.1.158:5132/file/song/' + album.value.songs[0].slug,
     duration: album.value.songs[0].duration,
-    coverURL: 'http://localhost:5132/file/cover/' + album.value.slug,
+    coverURL: 'https://192.168.1.158:5132/file/cover/' + album.value.slug,
     artist: album.value.artist.name
   })
 };
@@ -85,7 +85,7 @@ let playAlbum = () => {
   <div class="page_track">
     <div class="track" v-if="album">
       <div class="track-icon" :style="{ clipPath: rounded }" ref="cover">
-        <img :src="`http://localhost:5132/file/cover/${album.slug}`" alt="cover" v-if="album">
+        <img :src="`https://192.168.1.158:5132/file/cover/${album.slug}`" alt="cover" v-if="album">
       </div>
       <div class="track-content" v-if="album">
         <p class="paragraph text-sm">Album </p>

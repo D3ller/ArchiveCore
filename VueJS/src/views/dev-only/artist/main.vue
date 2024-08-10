@@ -20,7 +20,7 @@ let modal = ref({
 
 function addArtist() {
   modal.value.addModal.open = false;
-  axios.post('http://localhost:5132/api/artist/add', {
+  axios.post('https://192.168.1.158:5132/api/artist/add', {
         name: modal.value.addModal.name,
         slug: modal.value.addModal.slug
       }, {

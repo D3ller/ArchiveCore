@@ -7,7 +7,7 @@ import {useAccount} from "../../stores/account";
 import router from "../../router";
 let account = useAccount();
 
-axios.get('http://localhost:5132/api/history/get', {
+axios.get('https://192.168.1.158:5132/api/history/get', {
   withCredentials: true
 })
     .then((response) => {

@@ -8,7 +8,7 @@ let account = useAccount();
 let playlists = ref(null);
 
 let createPlaylist = () => {
-  axios.post('http://localhost:5132/api/playlist/create', {
+  axios.post('https://192.168.1.158:5132/api/playlist/create', {
   }, {
     withCredentials: true
   }).then((response) => {
@@ -28,7 +28,7 @@ let createPlaylist = () => {
   }
 
 let getPlaylists = () => {
-  axios.post('http://localhost:5132/api/playlist/user', {}, {
+  axios.post('https://192.168.1.158:5132/api/playlist/user', {}, {
     withCredentials: true
   }).then((response) => {
     console.log(response.data);

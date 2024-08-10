@@ -43,7 +43,7 @@ function roundedClipPath() {
 }
 
 function fetchArtistData(id) {
-  axios.get(`http://localhost:5132/api/artist/find/${id}`, {
+  axios.get(`https://192.168.1.158:5132/api/artist/find/${id}`, {
     withCredentials: true
   })
       .then((response) => {
@@ -61,7 +61,7 @@ function fetchArtistData(id) {
 
 let toggleSubscription = () => {
   if (account.connected) {
-    axios.post('http://localhost:5132/api/subscribe/toggle', {
+    axios.post('https://192.168.1.158:5132/api/subscribe/toggle', {
       artistid: route.params.id,
     }, {
       withCredentials: true
@@ -96,7 +96,7 @@ watch(() => route.params.id, (newId) => {
   <div class="page_track">
     <div class="track" v-if="artist">
       <div class="track-icon"
-           :style="{ clipPath: rounded, backgroundImage: `url(http://localhost:5132${artist.avatarURL})` }"
+           :style="{ clipPath: rounded, backgroundImage: `url(https://192.168.1.158:5132${artist.avatarURL})` }"
            ref="cover"></div>
       <div class="artist-content">
         <h1>{{ artist.name }}</h1>

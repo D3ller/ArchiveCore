@@ -13,7 +13,7 @@ let modal = ref({
   open: false
 })
 
-axios.get('http://localhost:5132/api/friends/get', {
+axios.get('https://192.168.1.158:5132/api/friends/get', {
   withCredentials: true
 })
     .then((response) => {
@@ -32,7 +32,7 @@ axios.get('http://localhost:5132/api/friends/get', {
 })
 
 const addFriend = () => {
-axios.post('http://localhost:5132/api/friends/add', {
+axios.post('https://192.168.1.158:5132/api/friends/add', {
   username: message.value
 }, {
   withCredentials: true

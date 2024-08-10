@@ -46,7 +46,7 @@ function msToSecAndMin(ms) {
 
 let addToPlaylist = (value) => {
   modal.value = false;
-  axios.post('http://localhost:5132/api/playlist/add', {
+  axios.post('https://192.168.1.158:5132/api/playlist/add', {
     playlistSlug: value.slug,
     SongSlug: props.song.slug
   }, {
@@ -68,7 +68,7 @@ let addToPlaylist = (value) => {
 
 let deleteSongFromPL = (songSlug, playlistSlug) => {
   console.log(songSlug, playlistSlug);
-  axios.post('http://localhost:5132/api/playlist/delete', {
+  axios.post('https://192.168.1.158:5132/api/playlist/delete', {
     playlistSlug: playlistSlug,
     songSlug: props.song.slug
   }, {
@@ -96,9 +96,9 @@ let deleteSongFromPL = (songSlug, playlistSlug) => {
     <div class="flex items-center gap-5 w-1/3">
       <div class="track-number">{{ trackNumber }}.</div>
       <div class="track-cover">
-        <img :src="'http://localhost:5132/file/cover/'+song.album.slug" v-if="song.album" alt="cover"/>
+        <img :src="'https://192.168.1.158:5132/file/cover/'+song.album.slug" v-if="song.album" alt="cover"/>
         <img
-            :src="`http://localhost:5132/file/${song.coverURL === 'null' || song.coverURL === null ? 'artist' : 'cover'}/${song.coverURL === 'null' || song.coverURL === null ? song.artist.slug : song.slug}`"
+            :src="`https://192.168.1.158:5132/file/${song.coverURL === 'null' || song.coverURL === null ? 'artist' : 'cover'}/${song.coverURL === 'null' || song.coverURL === null ? song.artist.slug : song.slug}`"
             v-else alt="cover"/>
       </div>
       <div>
@@ -139,11 +139,11 @@ playlist_add
       </div>
 
       <div title="Add to Queue"
-           @click="$event.target.blur();player.addToQueue({title: song.title, url: `http://localhost:5132/file/song/${song.slug}`,duration: song.duration, coverURL: `http://localhost:5132/file/${song.coverURL === 'null' || song.coverURL === null ? 'artist' : 'cover'}/${(song.album && song.album.coverURL) ? song.album.coverURL.slice(12) : (song.coverURL === 'null' || song.coverURL === null ? song.artist.slug : song.slug)}`, artist: song.artist.name, slug: song.slug})">
+           @click="$event.target.blur();player.addToQueue({title: song.title, url: `https://192.168.1.158:5132/file/song/${song.slug}`,duration: song.duration, coverURL: `https://192.168.1.158:5132/file/${song.coverURL === 'null' || song.coverURL === null ? 'artist' : 'cover'}/${(song.album && song.album.coverURL) ? song.album.coverURL.slice(12) : (song.coverURL === 'null' || song.coverURL === null ? song.artist.slug : song.slug)}`, artist: song.artist.name, slug: song.slug})">
         <span class="material-symbols-outlined">queue_music</span></div>
       <div
           title="Play Song"
-          @click="$event.target.blur();player.setSong({title: song.title, url: `http://localhost:5132/file/song/${song.slug}`,duration: song.duration, coverURL: `http://localhost:5132/file/${song.coverURL === 'null' || song.coverURL === null ? 'artist' : 'cover'}/${(song.album && song.album.coverURL) ? song.album.coverURL.slice(12) : (song.coverURL === 'null' || song.coverURL === null ? song.artist.slug : song.slug)}`, artist: song.artist.name, slug: song.slug})">
+          @click="$event.target.blur();player.setSong({title: song.title, url: `https://192.168.1.158:5132/file/song/${song.slug}`,duration: song.duration, coverURL: `https://192.168.1.158:5132/file/${song.coverURL === 'null' || song.coverURL === null ? 'artist' : 'cover'}/${(song.album && song.album.coverURL) ? song.album.coverURL.slice(12) : (song.coverURL === 'null' || song.coverURL === null ? song.artist.slug : song.slug)}`, artist: song.artist.name, slug: song.slug})">
         <span class="material-symbols-outlined">play_arrow</span></div>
 
       <div v-if="deleteSong" title="Delete Song" @click="deleteSongFromPL(deleteSong.songSlug, deleteSong.playlistSlug)">

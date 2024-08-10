@@ -14,7 +14,7 @@ watch(() => player.currentSong, (newVal) => {
   console.log(newVal);
   if (newVal) {
     if (accounts.connected) {
-      axios.post('http://localhost:5132/api/history/startListening', {
+      axios.post('https://192.168.1.158:5132/api/history/startListening', {
             songId: player.currentSong.slug
           },
           {withCredentials: true}).then((response) => {
@@ -47,7 +47,7 @@ audio.onended = () => {
 
   if (player.queue.length > 0) {
     if (accounts.connected) {
-      axios.post('http://localhost:5132/api/history/add', {
+      axios.post('https://192.168.1.158:5132/api/history/add', {
             songId: player.currentSong.slug
           },
           {withCredentials: true}).then((response) => {
@@ -66,7 +66,7 @@ audio.onended = () => {
   } else {
 
     if (accounts.connected) {
-      axios.post('http://localhost:5132/api/history/add', {
+      axios.post('https://192.168.1.158:5132/api/history/add', {
             songId: player.currentSong.slug
           },
           {withCredentials: true}).then((response) => {

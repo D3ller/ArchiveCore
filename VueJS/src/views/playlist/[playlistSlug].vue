@@ -37,7 +37,7 @@ function roundedClipPath() {
 }
 
 let getPlaylist = () => {
-  axios.get(`http://localhost:5132/api/playlist/${id}`, {
+  axios.get(`https://192.168.1.158:5132/api/playlist/${id}`, {
     withCredentials: true
   }).then((response) => {
     playlist.value = response.data
@@ -59,17 +59,17 @@ let playPlaylist = () => {
     console.log(playlist.value)
     player.addToQueueFirst({
       title: playlist.value.songs[i].song.title,
-      url: 'http://localhost:5132/file/song/' + playlist.value.songs[i].song.slug,
+      url: 'https://192.168.1.158:5132/file/song/' + playlist.value.songs[i].song.slug,
       duration: playlist.value.songs[i].song.duration,
-      coverURL: 'http://localhost:5132/file/cover/' + playlist.value.slug,
+      coverURL: 'https://192.168.1.158:5132/file/cover/' + playlist.value.slug,
       artist: playlist.value.songs[i].song.artist.name
     });
   }
   player.setSong({
     title: playlist.value.songs[0].song.title,
-    url: 'http://localhost:5132/file/song/' + playlist.value.songs[0].song.slug,
+    url: 'https://192.168.1.158:5132/file/song/' + playlist.value.songs[0].song.slug,
     duration: playlist.value.songs[0].song.duration,
-    coverURL: 'http://localhost:5132/file/cover/' + playlist.value.songs[0].song.slug,
+    coverURL: 'https://192.168.1.158:5132/file/cover/' + playlist.value.songs[0].song.slug,
     artist: playlist.value.songs[0].song.artist.name
   })
 };

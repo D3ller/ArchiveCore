@@ -6,7 +6,7 @@ import router from "../../router/index.js";
 let account = useAccount();
 
 onMounted(() => {
-  axios.post('http://localhost:5132/api/auth/logout', {}, {
+  axios.post('https://192.168.1.158:5132/api/auth/logout', {}, {
     withCredentials: true
   }).then((response) => {
     if(response.status === 200) {

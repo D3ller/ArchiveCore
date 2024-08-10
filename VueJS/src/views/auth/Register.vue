@@ -31,7 +31,7 @@ const register = () => {
     return;
   }
 
-  axios.post('http://localhost:5132/api/auth/register', input.value, {
+  axios.post('https://192.168.1.158:5132/api/auth/register', input.value, {
     withCredentials: true
   })
       .then((response) => {

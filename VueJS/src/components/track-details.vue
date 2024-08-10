@@ -65,7 +65,7 @@ let props = defineProps({
       class="track-icon"
       :style="{
         clipPath: rounded,
-        backgroundImage: `url(${album && album.coverURL ? 'http://localhost:5132' + album.coverURL : coverUrl && coverUrl !== 'null' ? 'http://localhost:5132' + coverUrl : artist ? 'http://localhost:5132' + artist.avatarURL : 'http://localhost:5132' +artistAvatar})`
+        backgroundImage: `url(${album && album.coverURL ? 'https://192.168.1.158:5132' + album.coverURL : coverUrl && coverUrl !== 'null' ? 'https://192.168.1.158:5132' + coverUrl : artist ? 'https://192.168.1.158:5132' + artist.avatarURL : 'https://192.168.1.158:5132' +artistAvatar})`
     }"
       ref="cover">
   </div>

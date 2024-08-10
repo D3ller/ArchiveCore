@@ -25,7 +25,7 @@ const emit = defineEmits(['update:modelValue', 'close']);
 
 const fetchProjects = async () => {
   try {
-    const response = await axios.post('http://localhost:5132/api/playlist/user', {}, {
+    const response = await axios.post('https://192.168.1.158:5132/api/playlist/user', {}, {
       withCredentials: true
     });
     project.value = response.data;

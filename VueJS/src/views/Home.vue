@@ -9,7 +9,7 @@ const uid = getCurrentInstance()?.uid;
 let rounded = ref<string | null>(null);
 let homeSongs = ref<any>(null);
 
-axios.post('http://localhost:5132/api/song/home', {}, {
+axios.post('https://192.168.1.158:5132/api/song/home', {}, {
   withCredentials: true
 }).then(res => {
   homeSongs.value = res.data

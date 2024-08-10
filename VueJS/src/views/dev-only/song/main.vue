@@ -13,7 +13,7 @@ import Cselect from "../../../components/input/cselect.vue";
 let artist = ref(null)
 let song = ref(null)
 
-axios.post('http://localhost:5132/api/artist/all', {}, {
+axios.post('https://192.168.1.158:5132/api/artist/all', {}, {
   withCredentials: true
 }).then(res => {
   artist.value = res.data
@@ -21,7 +21,7 @@ axios.post('http://localhost:5132/api/artist/all', {}, {
   console.log(err)
 })
 
-axios.post('http://localhost:5132/api/song/all', {}, {
+axios.post('https://192.168.1.158:5132/api/song/all', {}, {
   withCredentials: true
 }).then(res => {
   song.value = res.data
@@ -52,7 +52,7 @@ let modal = ref({
 })
 
 let addSong = () => {
-  axios.post('http://localhost:5132/api/song/add', {
+  axios.post('https://192.168.1.158:5132/api/song/add', {
     title: modal.value.addModal.title,
     slugs: modal.value.addModal.slug,
     duration: parseInt(modal.value.addModal.duration),
@@ -72,7 +72,7 @@ let addSong = () => {
 }
 
 let addFeature = () => {
-  axios.post('http://localhost:5132/api/song/addFeature', {
+  axios.post('https://192.168.1.158:5132/api/song/addFeature', {
     songId: parseInt(modal.value.featureModal.songID),
     artistId: parseInt(modal.value.featureModal.artistID)
   }, {

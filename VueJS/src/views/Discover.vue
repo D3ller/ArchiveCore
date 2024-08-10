@@ -9,7 +9,7 @@ let results: any = ref([]);
 let artist = ref([]);
 let search = lodash.debounce(() => {
   artist.value = [];
-  axios.get('http://localhost:5132/api/search/' + s.value, {
+  axios.get('https://192.168.1.158:5132/api/search/' + s.value, {
     withCredentials: true
   }).then((response) => {
         results.value = response.data;
