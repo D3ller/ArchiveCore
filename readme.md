@@ -36,4 +36,4 @@ bun dev
 
 # Langages utilisés
 
-![Lang](https://skillicons.dev/icons?i=vue,typescript,tailwind,express,postgresql,prisma)
+![Lang](https://skillicons.dev/icons?i=vue,typescript,tailwind,express,postgresql,prisma,electron,socket.io)
